@@ -3,10 +3,10 @@
 <head>
     <title>u da real question bank</title>
     <style>
-        /* --- Modern Medical Styling --- */
+        /* --- ngl this needs to get heavily redone --- */
         body {
-            font-family: 'Arial', sans-serif;
-            background: #231f28;
+            font-family: 'Verdana', sans-serif;
+            background: #95A0A6;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -17,9 +17,10 @@
         .quiz-box {
             max-width: 800px;
             width: 100%;
-            background: white;
+            background: #FBF3DE;
+            border: outset #FBF3DE;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             padding: 30px;
         }
         .header {
@@ -31,17 +32,18 @@
             border-bottom: 2px solid #e0e0e0;
         }
         .question-number {
-            background: #413c84;
-            color: white;
+            background: #1E3948;
+            color: #FBF3DE;
             padding: 8px 18px;
             border-radius: 25px;
             font-weight: bold;
         }
         .question-text {
-            font-size: 1.3rem;
-            color: #b1b4e8;
+            font-size: 1.33rem;
+            color: #1E3948;
             margin-bottom: 25px;
             line-height: 1.5;
+            font-weight: bold;
         }
         .options {
             display: flex;
@@ -50,36 +52,39 @@
             margin-bottom: 30px;
         }
         .option-btn {
-            background: white;
-            border: 2px solid #cbd5e0;
+            background: #E2D9C3;
+            border: 3.5px outset #E2D9C3;
             border-radius: 10px;
             padding: 15px 20px;
             font-size: 1rem;
+            font-weight: bold;
+            color: #1E3948;
             text-align: left;
             cursor: pointer;
             transition: all 0.2s ease;
         }
         .option-btn:hover:not(:disabled) {
-            background: #f0f9ff;
-            border-color: #0284c7;
+            background: #7D888A;
+            border-color: #95A0A6;
         }
         .option-btn.correct {
-            background: #86efac;
-            border-color: #15803d;
-            color: #14532d;
+            background: #5a9971;
+            border-color: #3f6b4f;
+            color: #3f6b4f;
         }
         .option-btn.incorrect {
-            background: #fecaca;
-            border-color: #b91c1c;
-            color: #7f1d1d;
+            background: #a15252;
+            border-color: #6e3737;
+            color: #6e3737;
         }
         .option-btn:disabled {
             cursor: not-allowed;
             opacity: 0.7;
         }
         .explanation-box {
-            background: #f8fafc;
-            border-left: 6px solid #0284c7;
+            background: #9aa3a8;
+            border: outset #9aa3a8;
+            border-left: 10px solid #5b6d79;
             padding: 20px;
             border-radius: 8px;
             margin: 25px 0;
@@ -99,7 +104,7 @@
             transition: background 0.2s;
         }
         .next-btn:hover:not(:disabled) {
-            background: #023e8a;
+            background: #023047;
         }
         .next-btn:disabled {
             background: #94a3b8;
