@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UK Medical SBA Bank</title>
+    <style>
+        /* --- Modern Medical Styling --- */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #eef2f3;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .quiz-box {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .question-number {
+            background: #0077b6;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+        .question-text {
+            font-size: 1.3rem;
+            color: #023047;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .option-btn {
+            background: white;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px 20px;
+            font-size: 1rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover:not(:disabled) {
+            background: #f0f9ff;
+            border-color: #0284c7;
+        }
+        .option-btn.correct {
+            background: #86efac;
+            border-color: #15803d;
+            color: #14532d;
+        }
+        .option-btn.incorrect {
+            background: #fecaca;
+            border-color: #b91c1c;
+            color: #7f1d1d;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .explanation-box {
+            background: #f8fafc;
+            border-left: 6px solid #0284c7;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            font-style: italic;
+            color: #1e293b;
+        }
+        .next-btn {
+            background: #0077b6;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            float: right;
+            transition: background 0.2s;
+        }
+        .next-btn:hover:not(:disabled) {
+            background: #023e8a;
+        }
+        .next-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+        .score-box {
+            text-align: center;
+            padding: 40px;
+        }
+        .score-box h2 {
+            color: #023047;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .restart-btn {
+            background: #0077b6;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-box" id="quizContainer">
+        <!-- Content will be loaded here by JavaScript -->
+    </div>
+
+    <script>
+        // --- YOUR MEDICAL QUESTIONS DATABASE ---
+        const questions = [
+            {
+                question: "A 65-year-old man with a history of hypertension and smoking presents with sudden, severe central chest pain radiating to his back. His blood pressure is 160/90 mmHg in the right arm and 110/70 mmHg in the left arm. What is the most likely diagnosis?",
+                options: [
+                    "Myocardial Infarction",
+                    "Pulmonary Embolism", 
+                    "Aortic Dissection",
+                    "Acute Pericarditis",
+                    "Boerhaave Syndrome"
+                ],
+                correct: 2, // Index 0 = first option, 1 = second, etc.
+                explanation: "The correct answer is Aortic Dissection. The key clues are: tearing pain radiating to the back, and a significant blood pressure difference between arms (pulse deficit), which suggests involvement of the aortic branches."
+            },
+            {
+                question: "A 28-year-old woman presents with 3 days of palpitations, heat intolerance, and weight loss. On examination, she has a fine tremor, warm moist skin, and a diffuse goiter with a bruit. What is the single most appropriate initial investigation?",
+                options: [
+                    "Thyroid ultrasound",
+                    "TSH, FT4, and FT3",
+                    "Thyroid antibody tests",
+                    "Radioiodine uptake scan",
+                    "Fine needle aspiration"
+                ],
+                correct: 1,
+                explanation: "TSH, FT4, and FT3 are the correct initial tests. This presentation suggests thyrotoxicosis. Thyroid function tests (TFTs) confirm the diagnosis and distinguish between overt and subclinical disease."
+            },
+            {
+                question: "Which of the following is the most common causative organism in community-acquired pneumonia in a previously healthy adult?",
+                options: [
+                    "Haemophilus influenzae",
+                    "Mycoplasma pneumoniae",
+                    "Staphylococcus aureus",
+                    "Streptococcus pneumoniae",
+                    "Legionella pneumophila"
+                ],
+                correct: 3,
+                explanation: "Streptococcus pneumoniae is the most common bacterial cause of community-acquired pneumonia in adults. Viruses are also common, but among bacterial causes, S. pneumoniae is the leading pathogen."
+            }
+            // Add more questions following the same format.
+            // Note: the last question does NOT have a comma after its closing brace.
+        ];
+
+        // --- QUIZ LOGIC (No need to change this) ---
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let answerSelected = false;
+
+        const quizContainer = document.getElementById('quizContainer');
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                showResults();
+                return;
+            }
+
+            const q = questions[currentQuestionIndex];
+            const isAnswered = userAnswers[currentQuestionIndex] !== null;
+            const selectedIdx = userAnswers[currentQuestionIndex];
+            
+            let optionsHtml = '';
+            for (let i = 0; i < q.options.length; i++) {
+                let btnClass = 'option-btn';
+                if (isAnswered) {
+                    if (i === q.correct) btnClass += ' correct';
+                    else if (i === selectedIdx && i !== q.correct) btnClass += ' incorrect';
+                }
+                optionsHtml += `<button class="${btnClass}" onclick="selectAnswer(${i})" ${isAnswered ? 'disabled' : ''}>${q.options[i]}</button>`;
+            }
+
+            const explanationHtml = isAnswered 
+                ? `<div class="explanation-box">📘 <strong>Explanation:</strong> ${q.explanation}</div>` 
+                : '';
+
+            const nextButtonDisabled = !isAnswered ? 'disabled' : '';
+
+            quizContainer.innerHTML = `
+                <div class="header">
+                    <span class="question-number">Question ${currentQuestionIndex + 1} of ${questions.length}</span>
+                    <span>🧑‍⚕️ UKMLA SBA</span>
+                </div>
+                <div class="question-text">${q.question}</div>
+                <div class="options" id="optionsContainer">
+                    ${optionsHtml}
+                </div>
+                ${explanationHtml}
+                <div class="clearfix">
+                    <button class="next-btn" onclick="nextQuestion()" ${nextButtonDisabled}>Next →</button>
+                </div>
+            `;
+            answerSelected = isAnswered;
+        }
+
+        window.selectAnswer = function(selectedIndex) {
+            if (userAnswers[currentQuestionIndex] !== null) return; // Already answered
+            
+            userAnswers[currentQuestionIndex] = selectedIndex;
+            answerSelected = true;
+            
+            // Re-load the question to show correct/incorrect colors and explanation
+            loadQuestion();
+        }
+
+        window.nextQuestion = function() {
+            if (userAnswers[currentQuestionIndex] === null) return; // No answer selected
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        function showResults() {
+            let correctCount = 0;
+            for (let i = 0; i < questions.length; i++) {
+                if (userAnswers[i] === questions[i].correct) correctCount++;
+            }
+            const percentage = Math.round((correctCount / questions.length) * 100);
+            
+            quizContainer.innerHTML = `
+                <div class="score-box">
+                    <h2>🎉 Quiz Complete!</h2>
+                    <p style="font-size: 1.2rem; margin: 20px 0;">You scored <strong>${correctCount}</strong> out of <strong>${questions.length}</strong></p>
+                    <div style="background: #e9ecef; height: 25px; width: 100%; border-radius: 30px; margin: 20px 0; overflow: hidden;">
+                        <div style="background: #0077b6; width: ${percentage}%; height: 100%;"></div>
+                    </div>
+                    <p style="font-size: 1.5rem; font-weight: bold; color: #023047;">${percentage}%</p>
+                    <button class="restart-btn" onclick="restartQuiz()">🔄 Try Again</button>
+                </div>
+            `;
+        }
+
+        window.restartQuiz = function() {
+            currentQuestionIndex = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            loadQuestion();
+        }
+
+        // Start the quiz
+        loadQuestion();
+    </script>
+</body>
+</html>
