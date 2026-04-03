@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UKMLA 2026 Mock Block - SBA Questions</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #eef2f3;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .quiz-box {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .question-number {
+            background: #0077b6;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+        .progress-stats {
+            background: #e8f4f8;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            color: #0077b6;
+            font-weight: bold;
+        }
+        .search-nav {
+            background: #f1f5f9;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .search-nav:hover {
+            background: #e2e8f0;
+        }
+        .question-text {
+            font-size: 1.3rem;
+            color: #023047;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .option-btn {
+            background: white;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px 20px;
+            font-size: 1rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover:not(:disabled) {
+            background: #f0f9ff;
+            border-color: #0284c7;
+        }
+        .option-btn.correct {
+            background: #86efac;
+            border-color: #15803d;
+            color: #14532d;
+        }
+        .option-btn.incorrect {
+            background: #fecaca;
+            border-color: #b91c1c;
+            color: #7f1d1d;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .explanation-box {
+            background: #f8fafc;
+            border-left: 6px solid #0284c7;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            font-style: italic;
+            color: #1e293b;
+        }
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .prev-btn, .next-btn {
+            background: #0077b6;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .prev-btn:disabled, .next-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+        .prev-btn:hover:not(:disabled), .next-btn:hover:not(:disabled) {
+            background: #023e8a;
+        }
+        .question-jumper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        #questionJump {
+            width: 60px;
+            padding: 8px;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .jump-btn {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .score-box {
+            text-align: center;
+            padding: 40px;
+        }
+        .score-box h2 {
+            color: #023047;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .personal-best {
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #f59e0b;
+        }
+        .restart-btn, .back-home {
+            background: #0077b6;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-right: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .back-home {
+            background: #64748b;
+        }
+        .back-home:hover {
+            background: #475569;
+        }
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        @media (max-width: 600px) {
+            .quiz-box {
+                padding: 20px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .question-jumper {
+                order: 3;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-box" id="quizContainer">
+        <!-- Content will be loaded here by JavaScript -->
+    </div>
+
+    <script>
+        // --- QUIZ ID ---
+        const QUIZ_NAME = 'mock2026';
+        
+        // --- ALL YOUR QUESTIONS TOGETHER (2026 MOCK BLOCK) ---
+        // Each question has: question, options (array of 5), correct (index 0-4), explanation
+        const questions = [
+            {
+                id: 0,
+                question: "A 65-year-old man with a history of hypertension and smoking presents with sudden, severe central chest pain radiating to his back. His blood pressure is 160/90 mmHg in the right arm and 110/70 mmHg in the left arm. What is the most likely diagnosis?",
+                options: [
+                    "Myocardial Infarction",
+                    "Pulmonary Embolism", 
+                    "Aortic Dissection",
+                    "Acute Pericarditis",
+                    "Boerhaave Syndrome"
+                ],
+                correct: 2,
+                explanation: "The correct answer is Aortic Dissection. The key clues are: tearing pain radiating to the back, and a significant blood pressure difference between arms (pulse deficit), which suggests involvement of the aortic branches."
+            },
+            {
+                id: 1,
+                question: "A 28-year-old woman presents with 3 days of palpitations, heat intolerance, and weight loss. On examination, she has a fine tremor, warm moist skin, and a diffuse goiter with a bruit. What is the single most appropriate initial investigation?",
+                options: [
+                    "Thyroid ultrasound",
+                    "TSH, FT4, and FT3",
+                    "Thyroid antibody tests",
+                    "Radioiodine uptake scan",
+                    "Fine needle aspiration"
+                ],
+                correct: 1,
+                explanation: "TSH, FT4, and FT3 are the correct initial tests. This presentation suggests thyrotoxicosis. Thyroid function tests (TFTs) confirm the diagnosis and distinguish between overt and subclinical disease."
+            },
+            {
+                id: 2,
+                question: "Which of the following is the most common causative organism in community-acquired pneumonia in a previously healthy adult?",
+                options: [
+                    "Haemophilus influenzae",
+                    "Mycoplasma pneumoniae",
+                    "Staphylococcus aureus",
+                    "Streptococcus pneumoniae",
+                    "Legionella pneumophila"
+                ],
+                correct: 3,
+                explanation: "Streptococcus pneumoniae is the most common bacterial cause of community-acquired pneumonia in adults. Viruses are also common, but among bacterial causes, S. pneumoniae is the leading pathogen."
+            }
+            // --- ADD YOUR NEW QUESTIONS HERE ---
+            // Just copy the format below (remove the // comments):
+            //
+            // {
+            //     id: 3,
+            //     question: "Your question text here?",
+            //     options: [
+            //         "Option 1",
+            //         "Option 2", 
+            //         "Option 3",
+            //         "Option 4",
+            //         "Option 5"
+            //     ],
+            //     correct: 0,  // 0 for first option, 1 for second, etc.
+            //     explanation: "Your explanation here."
+            // },
+        ];
+
+        // Store questions in localStorage for search feature on homepage
+        localStorage.setItem('mock2026_questions', JSON.stringify(questions.map(q => ({
+            id: q.id,
+            question: q.question,
+            options: q.options,
+            explanation: q.explanation
+        }))));
+
+        // --- PROGRESS TRACKING ---
+        function getStoredProgress() {
+            const progress = localStorage.getItem(`quiz_progress_${QUIZ_NAME}`);
+            if (progress) {
+                return JSON.parse(progress);
+            }
+            return {
+                bestScore: 0,
+                lastScore: 0,
+                attempts: 0,
+                lastDate: null,
+                answers: new Array(questions.length).fill(null)
+            };
+        }
+        
+        function saveProgress(progress) {
+            localStorage.setItem(`quiz_progress_${QUIZ_NAME}`, JSON.stringify(progress));
+        }
+        
+        function updateProgressOnComplete(correctCount, totalQuestions) {
+            const percentage = Math.round((correctCount / totalQuestions) * 100);
+            const progress = getStoredProgress();
+            
+            progress.attempts++;
+            progress.lastScore = percentage;
+            progress.lastDate = new Date().toISOString();
+            
+            if (percentage > progress.bestScore) {
+                progress.bestScore = percentage;
+            }
+            
+            saveProgress(progress);
+            return progress;
+        }
+        
+        // --- QUIZ STATE ---
+        let currentQuestionIndex = 0;
+        let userAnswers = getStoredProgress().answers || new Array(questions.length).fill(null);
+        let answerSelected = false;
+
+        const quizContainer = document.getElementById('quizContainer');
+
+        // Check if we need to jump to a specific question (from search)
+        const jumpToQuestion = localStorage.getItem('mock2026_jumpToQuestion');
+        if (jumpToQuestion !== null) {
+            currentQuestionIndex = parseInt(jumpToQuestion);
+            localStorage.removeItem('mock2026_jumpToQuestion');
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                showResults();
+                return;
+            }
+
+            const q = questions[currentQuestionIndex];
+            const isAnswered = userAnswers[currentQuestionIndex] !== null;
+            const selectedIdx = userAnswers[currentQuestionIndex];
+            
+            let optionsHtml = '';
+            for (let i = 0; i < q.options.length; i++) {
+                let btnClass = 'option-btn';
+                if (isAnswered) {
+                    if (i === q.correct) btnClass += ' correct';
+                    else if (i === selectedIdx && i !== q.correct) btnClass += ' incorrect';
+                }
+                optionsHtml += `<button class="${btnClass}" onclick="selectAnswer(${i})" ${isAnswered ? 'disabled' : ''}>${q.options[i]}</button>`;
+            }
+
+            const explanationHtml = isAnswered 
+                ? `<div class="explanation-box">📘 <strong>Explanation:</strong> ${q.explanation}</div>` 
+                : '';
+
+            const progress = getStoredProgress();
+            
+            quizContainer.innerHTML = `
+                <div class="header">
+                    <span class="question-number">Question ${currentQuestionIndex + 1} of ${questions.length}</span>
+                    <span class="progress-stats">🏆 Best: ${progress.bestScore}%</span>
+                    <span class="search-nav" onclick="goToHomepage()">🔍 Search Questions</span>
+                </div>
+                <div class="question-text">${q.question}</div>
+                <div class="options" id="optionsContainer">
+                    ${optionsHtml}
+                </div>
+                ${explanationHtml}
+                <div class="navigation-buttons">
+                    <button class="prev-btn" onclick="prevQuestion()" ${currentQuestionIndex === 0 ? 'disabled' : ''}>← Previous</button>
+                    <div class="question-jumper">
+                        <input type="number" id="questionJump" min="1" max="${questions.length}" value="${currentQuestionIndex + 1}">
+                        <button class="jump-btn" onclick="jumpToQuestion()">Go</button>
+                    </div>
+                    <button class="next-btn" onclick="nextQuestion()">${currentQuestionIndex === questions.length - 1 ? 'Finish →' : 'Next →'}</button>
+                </div>
+            `;
+            answerSelected = isAnswered;
+        }
+
+        window.selectAnswer = function(selectedIndex) {
+            if (userAnswers[currentQuestionIndex] !== null) return;
+            
+            userAnswers[currentQuestionIndex] = selectedIndex;
+            answerSelected = true;
+            
+            // Save answers to progress
+            const progress = getStoredProgress();
+            progress.answers = userAnswers;
+            saveProgress(progress);
+            
+            loadQuestion();
+        }
+
+        window.nextQuestion = function() {
+            if (userAnswers[currentQuestionIndex] === null && currentQuestionIndex < questions.length) {
+                alert('Please select an answer before continuing.');
+                return;
+            }
+            
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else if (currentQuestionIndex === questions.length - 1) {
+                // Last question, show results
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+        }
+
+        window.prevQuestion = function() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+        
+        window.jumpToQuestion = function() {
+            const jumpValue = parseInt(document.getElementById('questionJump').value);
+            if (jumpValue >= 1 && jumpValue <= questions.length) {
+                currentQuestionIndex = jumpValue - 1;
+                loadQuestion();
+            } else {
+                alert(`Please enter a number between 1 and ${questions.length}`);
+            }
+        }
+        
+        window.goToHomepage = function() {
+            // Save current answers before leaving
+            const progress = getStoredProgress();
+            progress.answers = userAnswers;
+            saveProgress(progress);
+            window.location.href = 'index.html';
+        }
+
+        function showResults() {
+            let correctCount = 0;
+            for (let i = 0; i < questions.length; i++) {
+                if (userAnswers[i] === questions[i].correct) correctCount++;
+            }
+            const percentage = Math.round((correctCount / questions.length) * 100);
+            
+            // Update progress tracking
+            const progress = updateProgressOnComplete(correctCount, questions.length);
+            
+            // Build detailed results
+            let detailedResults = '';
+            for (let i = 0; i < questions.length; i++) {
+                const isCorrect = userAnswers[i] === questions[i].correct;
+                const statusEmoji = isCorrect ? '✅' : '❌';
+                detailedResults += `
+                    <div style="padding: 10px; margin: 5px 0; background: ${isCorrect ? '#e6f7e6' : '#ffe6e6'}; border-radius: 8px;">
+                        <strong>${statusEmoji} Question ${i + 1}:</strong> ${questions[i].question.substring(0, 100)}...
+                        ${!isCorrect ? `<br><span style="font-size: 0.85rem; color: #666;">Correct answer: ${questions[i].options[questions[i].correct]}</span>` : ''}
+                    </div>
+                `;
+            }
+            
+            quizContainer.innerHTML = `
+                <div class="score-box">
+                    <h2>🎉 Mock Block Complete!</h2>
+                    <p style="font-size: 1.2rem; margin: 20px 0;">You scored <strong>${correctCount}</strong> out of <strong>${questions.length}</strong></p>
+                    <div style="background: #e9ecef; height: 25px; width: 100%; border-radius: 30px; margin: 20px 0; overflow: hidden;">
+                        <div style="background: #0077b6; width: ${percentage}%; height: 100%;"></div>
+                    </div>
+                    <p style="font-size: 1.5rem; font-weight: bold; color: #023047;">${percentage}%</p>
+                    <div class="personal-best">
+                        <strong>📊 Your Progress</strong><br>
+                        🏆 Best Score: ${progress.bestScore}%<br>
+                        📝 This Score: ${percentage}%<br>
+                        🔄 Attempts: ${progress.attempts}<br>
+                        ${percentage > progress.bestScore && progress.attempts > 1 ? '<br>🎉 NEW PERSONAL BEST! 🎉' : ''}
+                    </div>
+                    <details style="margin: 20px 0; text-align: left;">
+                        <summary style="cursor: pointer; color: #0077b6; font-weight: bold;">📋 View Detailed Results</summary>
+                        <div style="margin-top: 15px; max-height: 400px; overflow-y: auto;">
+                            ${detailedResults}
+                        </div>
+                    </details>
+                    <div style="margin-top: 30px;">
+                        <button class="restart-btn" onclick="restartQuiz()">🔄 Try Again</button>
+                        <a href="index.html" class="back-home">🏠 Back to Home</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.restartQuiz = function() {
+            currentQuestionIndex = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            const progress = getStoredProgress();
+            progress.answers = userAnswers;
+            saveProgress(progress);
+            loadQuestion();
+        }
+
+        // Start the quiz
+        loadQuestion();
+    </script>
+</body>
+</html>
