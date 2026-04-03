@@ -65,9 +65,9 @@
             font-size: 1rem;
         }
         
-        /* Search Bar */
+        /* Search Section */
         .search-section {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(250, 250, 255, 0.95);
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 30px;
@@ -117,10 +117,11 @@
         
         /* Search Results */
         .results-section {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(250, 255, 250, 0.95);
             border-radius: 15px;
             padding: 25px;
             backdrop-filter: blur(5px);
+            margin-bottom: 30px;
         }
         
         .results-header {
@@ -188,7 +189,7 @@
             text-decoration: none;
             display: block;
             color: inherit;
-            margin-top: 20px;
+            margin-bottom: 20px;
         }
         
         .quiz-card:hover {
@@ -210,6 +211,43 @@
         .quiz-info {
             color: #475569;
             margin-top: 10px;
+        }
+        
+        /* Clear Progress Section */
+        .clear-progress-section {
+            background: rgba(255, 250, 250, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid #fecaca;
+        }
+        
+        .clear-progress-section h3 {
+            color: #dc2626;
+            margin-bottom: 10px;
+        }
+        
+        .clear-progress-section p {
+            color: #475569;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        #clearAllProgressBtn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        
+        #clearAllProgressBtn:hover {
+            background: #b91c1c;
         }
         
         .footer {
@@ -245,11 +283,11 @@
         <!-- Search Section -->
         <div class="search-section">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search for a question by keyword (e.g., 'chest pain', 'thyroid', 'pneumonia')...">
-                <button id="searchBtn">🔍 Search</button>
+                <input type="text" id="searchInput" placeholder="search for a question idk">
+                <button id="searchBtn">😱 Search</button>
             </div>
             <div class="search-info">
-                💡 Tip: Type any word from a question to find it. Click on any result to jump directly to that question in the quiz.
+                each click causes cancer
             </div>
         </div>
         
@@ -267,31 +305,33 @@
         <!-- Quiz Card -->
         <a href="quiz-mock2026.html" class="quiz-card">
             <div class="quiz-icon">📝</div>
-            <div class="quiz-title">2026 Mock Block</div>
-            <div class="quiz-info">Start the full 2026 mock exam →</div>
+            <div class="quiz-title">Y2 2026 Mock</div>
+            <div class="quiz-info">Start the full Y2 2026 mock exam →</div>
         </a>
+        
+        <!-- Clear Progress Section -->
+        <div class="clear-progress-section">
+            <h3>⚠️ Reset Your Progress</h3>
+            <p>this will delete your ENTIRE history so only click this if u wanna reset ur progress</p>
+            <button id="clearAllProgressBtn">Clear All Progress</button>
+        </div>
         
         <!-- Footer -->
         <div class="footer">
-            Made with ❤️ for UK medical students | UKMLA 2026 Curriculum Aligned
+            Wiggly Inc.
         </div>
     </div>
 
     <script>
         // This will be populated with your questions
-        // The actual questions are stored in the quiz file
-        // We'll load them from localStorage or fetch them
-        
         let allQuestions = [];
-        
-        // Function to load questions from localStorage (saved after quiz is viewed)
+      
+        // Function to load questions from localStorage
         function loadQuestions() {
-            // First try to get questions from localStorage
             const stored = localStorage.getItem('mock2026_questions');
             if (stored) {
                 allQuestions = JSON.parse(stored);
             } else {
-                // Fallback message - questions will load once user visits the quiz
                 allQuestions = [];
             }
             displayResults([]);
@@ -310,7 +350,7 @@
                        q.options.some(opt => opt.toLowerCase().includes(lowerKeyword));
             }).map(q => ({
                 ...q,
-                originalIndex: q.id // Use the question ID from the quiz
+                originalIndex: q.id
             }));
         }
         
@@ -329,7 +369,6 @@
             
             let html = '';
             for (const result of results) {
-                // Truncate question if too long
                 let questionText = result.question;
                 if (questionText.length > 100) {
                     questionText = questionText.substring(0, 100) + '...';
@@ -347,10 +386,36 @@
         
         // Navigate to the quiz and specific question
         function goToQuestion(questionId) {
-            // Store which question to jump to in localStorage
             localStorage.setItem('mock2026_jumpToQuestion', questionId);
-            // Navigate to the quiz
             window.location.href = 'quiz-mock2026.html';
+        }
+        
+        // Clear ALL progress
+        function clearAllProgress() {
+            const confirmed = confirm('⚠️ WARNING: This will permanently delete ALL your quiz progress including:\n\n- All saved answers\n- Best scores\n- Attempt history\n- Personal best records\n\nThis cannot be undone. Are you sure you want to continue?');
+            
+            if (confirmed) {
+                // Get all keys that start with 'quiz_progress_'
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && (key.startsWith('quiz_progress_') || key === 'mock2026_questions' || key === 'mock2026_jumpToQuestion')) {
+                        keysToRemove.push(key);
+                    }
+                }
+                
+                // Remove all matching keys
+                keysToRemove.forEach(key => localStorage.removeItem(key));
+                
+                // Also remove any answers stored in progress
+                localStorage.removeItem('mock2026_answers');
+                
+                // Show success message
+                alert('✅ All your progress has been cleared. The page will now refresh.');
+                
+                // Reload the page to reset everything
+                window.location.reload();
+            }
         }
         
         // Event listeners
@@ -373,15 +438,10 @@
             displayResults([]);
         });
         
+        document.getElementById('clearAllProgressBtn').addEventListener('click', clearAllProgress);
+        
         // Load questions when page loads
         loadQuestions();
-        
-        // Also try to fetch questions from the quiz file if not in localStorage
-        fetch('quiz-mock2026.html')
-            .catch(() => {
-                // If quiz doesn't exist yet, that's fine
-                console.log('Quiz file not yet created');
-            });
     </script>
 </body>
 </html>
