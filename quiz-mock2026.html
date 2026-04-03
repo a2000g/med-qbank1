@@ -57,6 +57,20 @@
         .search-nav:hover {
             background: #e2e8f0;
         }
+        .reset-quiz-btn {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            border: none;
+            font-weight: bold;
+        }
+        .reset-quiz-btn:hover {
+            background: #fde68a;
+        }
         .question-text {
             font-size: 1.3rem;
             color: #023047;
@@ -111,6 +125,8 @@
             justify-content: space-between;
             align-items: center;
             margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         .prev-btn, .next-btn {
             background: #0077b6;
@@ -185,11 +201,104 @@
         .back-home:hover {
             background: #475569;
         }
+        .clear-progress-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .clear-progress-btn:hover {
+            background: #b91c1c;
+        }
+        
+        /* --- Modal Styles --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        
+        .modal-content h3 {
+            color: #023047;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .modal-content p {
+            color: #475569;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        .modal-content.warning h3 {
+            color: #dc2626;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .modal-btn-confirm {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .modal-btn-cancel {
+            background: #94a3b8;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .modal-btn-confirm:hover {
+            background: #b91c1c;
+        }
+        
+        .modal-btn-cancel:hover {
+            background: #64748b;
+        }
+        
+        .success-modal .modal-content {
+            border-top: 4px solid #22c55e;
+        }
+        
         .clearfix::after {
             content: "";
             clear: both;
             display: table;
         }
+        
         @media (max-width: 600px) {
             .quiz-box {
                 padding: 20px;
@@ -200,7 +309,6 @@
             }
             .navigation-buttons {
                 flex-direction: column;
-                gap: 15px;
             }
             .question-jumper {
                 order: 3;
@@ -212,13 +320,34 @@
     <div class="quiz-box" id="quizContainer">
         <!-- Content will be loaded here by JavaScript -->
     </div>
+    
+    <!-- Custom Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content warning">
+            <h3 id="modalTitle">⚠️ Warning</h3>
+            <p id="modalMessage">Are you sure you want to reset all your progress? This cannot be undone.</p>
+            <div class="modal-buttons">
+                <button id="modalConfirmBtn" class="modal-btn-confirm">Yes, Reset</button>
+                <button id="modalCancelBtn" class="modal-btn-cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="successModal" class="modal">
+        <div class="modal-content success-modal">
+            <h3>✅ Success!</h3>
+            <p id="successMessage">Your progress has been reset.</p>
+            <div class="modal-buttons">
+                <button id="successOkBtn" class="modal-btn-confirm" style="background: #22c55e;">OK</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // --- QUIZ ID ---
         const QUIZ_NAME = 'mock2026';
         
         // --- ALL YOUR QUESTIONS TOGETHER (2026 MOCK BLOCK) ---
-        // Each question has: question, options (array of 5), correct (index 0-4), explanation
         const questions = [
             {
                 id: 0,
@@ -259,31 +388,63 @@
                 correct: 3,
                 explanation: "Streptococcus pneumoniae is the most common bacterial cause of community-acquired pneumonia in adults. Viruses are also common, but among bacterial causes, S. pneumoniae is the leading pathogen."
             }
-            // --- ADD YOUR NEW QUESTIONS HERE ---
-            // Just copy the format below (remove the // comments):
-            //
-            // {
-            //     id: 3,
-            //     question: "Your question text here?",
-            //     options: [
-            //         "Option 1",
-            //         "Option 2", 
-            //         "Option 3",
-            //         "Option 4",
-            //         "Option 5"
-            //     ],
-            //     correct: 0,  // 0 for first option, 1 for second, etc.
-            //     explanation: "Your explanation here."
-            // },
         ];
 
-        // Store questions in localStorage for search feature on homepage
+        // Store questions in localStorage for search feature
         localStorage.setItem('mock2026_questions', JSON.stringify(questions.map(q => ({
             id: q.id,
             question: q.question,
             options: q.options,
             explanation: q.explanation
         }))));
+
+        // --- Modal Functions ---
+        function showConfirmationModal(title, message, onConfirm) {
+            const modal = document.getElementById('confirmationModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            const confirmBtn = document.getElementById('modalConfirmBtn');
+            const cancelBtn = document.getElementById('modalCancelBtn');
+            
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            
+            // Remove previous event listeners
+            const newConfirmBtn = confirmBtn.cloneNode(true);
+            const newCancelBtn = cancelBtn.cloneNode(true);
+            confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+            cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+            
+            newConfirmBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+                onConfirm();
+            });
+            
+            newCancelBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            
+            modal.style.display = 'flex';
+        }
+        
+        function showSuccessModal(message, onOk) {
+            const modal = document.getElementById('successModal');
+            const successMessage = document.getElementById('successMessage');
+            const okBtn = document.getElementById('successOkBtn');
+            
+            successMessage.textContent = message;
+            
+            // Remove previous event listener
+            const newOkBtn = okBtn.cloneNode(true);
+            okBtn.parentNode.replaceChild(newOkBtn, okBtn);
+            
+            newOkBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+                if (onOk) onOk();
+            });
+            
+            modal.style.display = 'flex';
+        }
 
         // --- PROGRESS TRACKING ---
         function getStoredProgress() {
@@ -320,6 +481,41 @@
             return progress;
         }
         
+        // --- RESET FUNCTIONS ---
+        function resetQuizOnly() {
+            showConfirmationModal(
+                '🔄 Reset Current Quiz',
+                'This will clear ALL your answers for this quiz. Your best score and attempt history will NOT be affected. You can start fresh. Are you sure?',
+                () => {
+                    // Reset only answers, keep progress stats
+                    userAnswers = new Array(questions.length).fill(null);
+                    currentQuestionIndex = 0;
+                    const progress = getStoredProgress();
+                    progress.answers = userAnswers;
+                    saveProgress(progress);
+                    loadQuestion();
+                    showSuccessModal('Your answers have been cleared! You can now retake the quiz.', null);
+                }
+            );
+        }
+        
+        function clearAllProgress() {
+            showConfirmationModal(
+                '⚠️ DELETE ALL PROGRESS',
+                'This will permanently delete ALL your progress including:\n\n• All saved answers\n• Best scores\n• Attempt history\n\nThis cannot be undone. Are you absolutely sure?',
+                () => {
+                    localStorage.removeItem(`quiz_progress_${QUIZ_NAME}`);
+                    userAnswers = new Array(questions.length).fill(null);
+                    currentQuestionIndex = 0;
+                    const progress = getStoredProgress();
+                    progress.answers = userAnswers;
+                    saveProgress(progress);
+                    loadQuestion();
+                    showSuccessModal('All your progress has been cleared! The quiz has been reset.', null);
+                }
+            );
+        }
+
         // --- QUIZ STATE ---
         let currentQuestionIndex = 0;
         let userAnswers = getStoredProgress().answers || new Array(questions.length).fill(null);
@@ -365,6 +561,7 @@
                     <span class="question-number">Question ${currentQuestionIndex + 1} of ${questions.length}</span>
                     <span class="progress-stats">🏆 Best: ${progress.bestScore}%</span>
                     <span class="search-nav" onclick="goToHomepage()">🔍 Search Questions</span>
+                    <button class="reset-quiz-btn" onclick="resetQuizOnly()">🔄 Reset Answers</button>
                 </div>
                 <div class="question-text">${q.question}</div>
                 <div class="options" id="optionsContainer">
@@ -389,7 +586,6 @@
             userAnswers[currentQuestionIndex] = selectedIndex;
             answerSelected = true;
             
-            // Save answers to progress
             const progress = getStoredProgress();
             progress.answers = userAnswers;
             saveProgress(progress);
@@ -407,7 +603,6 @@
                 currentQuestionIndex++;
                 loadQuestion();
             } else if (currentQuestionIndex === questions.length - 1) {
-                // Last question, show results
                 currentQuestionIndex++;
                 loadQuestion();
             }
@@ -431,12 +626,14 @@
         }
         
         window.goToHomepage = function() {
-            // Save current answers before leaving
             const progress = getStoredProgress();
             progress.answers = userAnswers;
             saveProgress(progress);
             window.location.href = 'index.html';
         }
+        
+        window.resetQuizOnly = resetQuizOnly;
+        window.clearAllProgress = clearAllProgress;
 
         function showResults() {
             let correctCount = 0;
@@ -445,10 +642,8 @@
             }
             const percentage = Math.round((correctCount / questions.length) * 100);
             
-            // Update progress tracking
             const progress = updateProgressOnComplete(correctCount, questions.length);
             
-            // Build detailed results
             let detailedResults = '';
             for (let i = 0; i < questions.length; i++) {
                 const isCorrect = userAnswers[i] === questions[i].correct;
@@ -485,6 +680,7 @@
                     <div style="margin-top: 30px;">
                         <button class="restart-btn" onclick="restartQuiz()">🔄 Try Again</button>
                         <a href="index.html" class="back-home">🏠 Back to Home</a>
+                        <button class="clear-progress-btn" onclick="clearAllProgress()">🗑️ Delete All Progress</button>
                     </div>
                 </div>
             `;
@@ -499,7 +695,6 @@
             loadQuestion();
         }
 
-        // Start the quiz
         loadQuestion();
     </script>
 </body>
