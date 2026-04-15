@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WigglyInc - UKMLA Mock Block</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        /* Full screen container */
+        .cinematic-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0a0a0a;
+        }
+        
+        /* Loading screen */
+        .loading-screen {
+            text-align: center;
+        }
+        
+        .image-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .loading-image {
+            width: 60px;
+            height: 60px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .loading-image.active {
+            opacity: 1;
+        }
+        
+        /* Welcome screen - WigglyInc */
+        .welcome-screen {
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .welcome-screen.visible {
+            opacity: 1;
+        }
+        
+        .welcome-screen.fade-out {
+            opacity: 0;
+        }
+        
+        .company-name {
+            color: white;
+            font-size: 3rem;
+            letter-spacing: 8px;
+            font-weight: 300;
+            font-family: 'Arial', sans-serif;
+            text-transform: uppercase;
+        }
+        
+        .company-subtitle {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            margin-top: 10px;
+            font-weight: 300;
+        }
+        
+        /* Hidden utility */
+        .hidden {
+            display: none;
+        }
+        
+        /* Cinematic flicker effect */
+        @keyframes flicker {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+        
+        .cinematic-flicker {
+            animation: flicker 0.1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="cinematic-container" id="cinematicContainer">
+        <!-- Loading Screen -->
+        <div id="loadingScreen" class="loading-screen">
+            <div class="image-row">
+                <img id="image1" class="loading-image" src="YOUR-IMAGE-1-URL.png" alt="">
+                <img id="image2" class="loading-image" src="YOUR-IMAGE-2-URL.png" alt="">
+                <img id="image3" class="loading-image" src="YOUR-IMAGE-3-URL.png" alt="">
+            </div>
+        </div>
+        
+        <!-- Welcome Screen (WigglyInc) -->
+        <div id="welcomeScreen" class="welcome-screen hidden">
+            <div class="company-name">WIGGLYINC.</div>
+            <div class="company-subtitle">EST. 2026</div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const IMAGE_DELAY = 500;        // Time between each image appearing (milliseconds)
+        const WELCOME_DURATION = 2000;   // How long WigglyInc stays on screen (milliseconds)
+        
+        let currentImage = 0;
+        const images = ['image1', 'image2', 'image3'];
+        
+        // Get the image elements
+        const img1 = document.getElementById('image1');
+        const img2 = document.getElementById('image2');
+        const img3 = document.getElementById('image3');
+        const loadingScreen = document.getElementById('loadingScreen');
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const container = document.getElementById('cinematicContainer');
+        
+        // Function to activate images one by one
+        function startLoadingSequence() {
+            const interval = setInterval(() => {
+                if (currentImage < images.length) {
+                    const imgElement = document.getElementById(images[currentImage]);
+                    imgElement.classList.add('active');
+                    currentImage++;
+                } else {
+                    clearInterval(interval);
+                    // All images loaded, show WigglyInc screen
+                    setTimeout(showWigglyInc, 500);
+                }
+            }, IMAGE_DELAY);
+        }
+        
+        // Function to show WigglyInc screen then redirect
+        function showWigglyInc() {
+            // Hide loading screen
+            loadingScreen.classList.add('hidden');
+            
+            // Show welcome screen
+            welcomeScreen.classList.remove('hidden');
+            
+            // Add a tiny delay then fade in
+            setTimeout(() => {
+                welcomeScreen.classList.add('visible');
+            }, 50);
+            
+            // Wait, then fade out and redirect
+            setTimeout(() => {
+                welcomeScreen.classList.add('fade-out');
+                
+                // After fade out, redirect to homepage
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 1000);
+            }, WELCOME_DURATION);
+        }
+        
+        // Start the sequence when page loads
+        window.addEventListener('load', () => {
+            startLoadingSequence();
+        });
+    </script>
+</body>
+</html>
