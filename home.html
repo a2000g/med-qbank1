@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>UKMLA 2026 Mock Block - SBA Question Bank</title>
+    <title>WigglyInc - UKMLA Command Interface</title>
     <style>
-        /* --- Background styling --- */
-        body {
-            font-family: 'Arial', sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-            position: relative;
+            padding: 0;
+            box-sizing: border-box;
         }
         
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #0f172a 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background grid (J.A.R.V.I.S. style) */
         body::before {
             content: "";
             position: fixed;
@@ -19,109 +25,159 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('YOUR-BACKGROUND-IMAGE-URL');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            z-index: -2;
+            background-image: 
+                linear-gradient(rgba(0, 170, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 170, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
         }
         
+        /* Subtle pulsing orb in background */
         body::after {
             content: "";
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.2);
-            z-index: -1;
+            top: 50%;
+            left: 50%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(0, 170, 255, 0.03) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
         }
         
         .container {
-            max-width: 1000px;
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Header - Wayne Industries style */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
             padding: 20px;
         }
         
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
+        .company-badge {
+            display: inline-block;
+            margin-bottom: 20px;
         }
         
-        .header h1 {
-            color: #023047;
-            font-size: 2rem;
-            margin-bottom: 10px;
+        .company-icon {
+            font-size: 3rem;
+            filter: drop-shadow(0 0 10px rgba(0, 170, 255, 0.5));
         }
         
-        .header p {
-            color: #0284c7;
-            font-size: 1rem;
+        .company-name {
+            color: #00aaff;
+            font-size: 1.2rem;
+            letter-spacing: 8px;
+            font-weight: 300;
+            margin-top: 10px;
+            text-transform: uppercase;
         }
         
-        /* Search Section */
+        h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        
+        .subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+        
+        .subtitle::before,
+        .subtitle::after {
+            content: "◆";
+            color: #00aaff;
+            font-size: 0.6rem;
+            margin: 0 10px;
+            opacity: 0.7;
+        }
+        
+        /* Search Section - Glass morphism */
         .search-section {
-            background: rgba(250, 250, 255, 0.95);
-            border-radius: 15px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             padding: 25px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(5px);
+            margin-bottom: 40px;
+            border: 1px solid rgba(0, 170, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
         
         .search-box {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             margin-bottom: 15px;
         }
         
         #searchInput {
             flex: 1;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 170, 255, 0.3);
             padding: 15px 20px;
             font-size: 1rem;
-            border: 2px solid #cbd5e0;
             border-radius: 50px;
+            color: white;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.3s ease;
         }
         
         #searchInput:focus {
-            border-color: #0077b6;
+            border-color: #00aaff;
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.3);
+        }
+        
+        #searchInput::placeholder {
+            color: rgba(255, 255, 255, 0.4);
         }
         
         #searchBtn {
-            background: #0077b6;
-            color: white;
-            border: none;
-            padding: 15px 30px;
+            background: rgba(0, 170, 255, 0.15);
+            border: 1px solid rgba(0, 170, 255, 0.5);
+            color: #00aaff;
+            padding: 15px 35px;
             font-size: 1rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         
         #searchBtn:hover {
-            background: #023e8a;
+            background: rgba(0, 170, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.3);
+            border-color: #00aaff;
         }
         
         .search-info {
-            color: #475569;
-            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
         }
         
-        /* Search Results */
+        /* Results Section */
         .results-section {
-            background: rgba(250, 255, 250, 0.95);
-            border-radius: 15px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             padding: 25px;
-            backdrop-filter: blur(5px);
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(0, 170, 255, 0.2);
         }
         
         .results-header {
@@ -129,204 +185,414 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e2e8f0;
-        }
-        
-        .clear-btn {
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 170, 255, 0.2);
+            color: #00aaff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             font-size: 0.85rem;
         }
         
+        .clear-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.6);
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
         .clear-btn:hover {
-            background: #dc2626;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #ff4444;
+            color: #ff4444;
         }
         
         .result-item {
             padding: 15px;
             margin-bottom: 10px;
-            background: #f8fafc;
-            border-radius: 10px;
-            border-left: 4px solid #0077b6;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border-left: 3px solid #00aaff;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
         }
         
         .result-item:hover {
-            background: #eef2ff;
+            background: rgba(0, 170, 255, 0.1);
+            transform: translateX(5px);
         }
         
         .result-question {
             font-weight: bold;
-            color: #023047;
+            color: white;
             margin-bottom: 8px;
         }
         
         .result-meta {
-            font-size: 0.8rem;
-            color: #64748b;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 1px;
         }
         
         .no-results {
             text-align: center;
             padding: 40px;
-            color: #64748b;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 1px;
         }
         
-        /* Quiz Card */
+        /* Quiz Cards - Glass morphism */
         .quiz-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 35px;
             text-align: center;
-            transition: transform 0.3s ease;
-            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 170, 255, 0.2);
             text-decoration: none;
             display: block;
-            color: inherit;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quiz-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 170, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .quiz-card:hover::before {
+            left: 100%;
         }
         
         .quiz-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            border-color: #00aaff;
+            box-shadow: 0 0 30px rgba(0, 170, 255, 0.2);
         }
         
         .quiz-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(0, 170, 255, 0.5));
         }
         
         .quiz-title {
-            font-size: 1.5rem;
-            color: #023047;
-            font-weight: bold;
+            font-size: 1.8rem;
+            color: white;
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
         }
         
         .quiz-info {
-            color: #475569;
-            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 15px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+        
+        .question-count {
+            color: #00aaff;
+            font-weight: bold;
+        }
+        
+        .last-score {
+            margin-top: 15px;
+        }
+        
+        .score-badge {
+            background: rgba(0, 170, 255, 0.15);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            padding: 6px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.85rem;
+            color: #00aaff;
+        }
+        
+        .no-score {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.85rem;
         }
         
         /* Clear Progress Section */
         .clear-progress-section {
-            background: rgba(255, 250, 250, 0.95);
-            border-radius: 15px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             padding: 25px;
             text-align: center;
-            backdrop-filter: blur(5px);
-            border: 1px solid #fecaca;
+            border: 1px solid rgba(255, 68, 68, 0.2);
+            margin-bottom: 30px;
         }
         
         .clear-progress-section h3 {
-            color: #dc2626;
+            color: #ff6666;
+            font-size: 1rem;
+            letter-spacing: 2px;
             margin-bottom: 10px;
+            text-transform: uppercase;
         }
         
         .clear-progress-section p {
-            color: #475569;
-            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.8rem;
             margin-bottom: 15px;
         }
         
         #clearAllProgressBtn {
-            background: #dc2626;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            font-size: 1rem;
+            background: rgba(255, 68, 68, 0.15);
+            border: 1px solid rgba(255, 68, 68, 0.5);
+            color: #ff6666;
+            padding: 10px 25px;
+            font-size: 0.9rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         
         #clearAllProgressBtn:hover {
-            background: #b91c1c;
+            background: rgba(255, 68, 68, 0.3);
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
         }
         
+        /* Footer */
         .footer {
             text-align: center;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            backdrop-filter: blur(5px);
-            color: #475569;
-            font-size: 0.85rem;
-            margin-top: 30px;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
         
+        /* Modal - J.A.R.V.I.S. style */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            box-shadow: 0 0 40px rgba(0, 170, 255, 0.2);
+        }
+        
+        .modal-content h3 {
+            color: #00aaff;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+        }
+        
+        .modal-content p {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .modal-btn-confirm {
+            background: rgba(255, 68, 68, 0.2);
+            border: 1px solid #ff6666;
+            color: #ff6666;
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-btn-cancel {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-btn-confirm:hover {
+            background: rgba(255, 68, 68, 0.4);
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+        }
+        
+        .modal-btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+                letter-spacing: 3px;
+            }
+            
             .search-box {
                 flex-direction: column;
             }
             
-            .header h1 {
-                font-size: 1.5rem;
+            .quiz-title {
+                font-size: 1.3rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
+        <!-- Header - Wayne Industries style -->
         <div class="header">
-            <h1>🩺 UKMLA 2026 Mock Block</h1>
-            <p>Single Best Answer Questions for Medical Students</p>
+            <div class="company-badge">
+                
+<div class="company-icon">
+    <img src="https://github.com/a2000g/med-qbank1/blob/main/W%20Logo.png?raw=true" alt="WigglyInc Logo" style="width: 60px; height: 60px; object-fit: contain;">
+</div>
+                <div class="company-name">WIGGLY INC.</div>
+            </div>
+            <div class="subtitle">UKMLA SBAs</div>
         </div>
         
         <!-- Search Section -->
         <div class="search-section">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="search for a question idk">
-                <button id="searchBtn">😱 Search</button>
-            </div>
-            <div class="search-info">
-                each click causes cancer
+                <input type="text" id="searchInput" placeholder="search for a question">
+                <button id="searchBtn">⟳ SEARCH</button>
             </div>
         </div>
         
         <!-- Search Results -->
         <div class="results-section" id="resultsSection">
             <div class="results-header">
-                <strong>📋 Search Results</strong>
-                <button class="clear-btn" id="clearBtn">Clear</button>
+                <strong>⟡ QUERY RESULTS ⟡</strong>
+                <button class="clear-btn" id="clearBtn">CLEAR</button>
             </div>
             <div id="resultsList">
-                <div class="no-results">Enter a keyword above to search for questions</div>
+                <div class="no-results">◆ AWAITING QUERY ◆</div>
             </div>
         </div>
         
         <!-- Quiz Card -->
         <a href="quiz-mock2026.html" class="quiz-card">
-            <div class="quiz-icon">📝</div>
-            <div class="quiz-title">Y2 2026 Mock</div>
-            <div class="quiz-info">Start the full Y2 2026 mock exam →</div>
+            <div class="quiz-icon">📡</div>
+            <div class="quiz-title">Y2 MOCK 2026</div>
+            <div class="quiz-info">
+                <span class="question-count" id="questionCountDisplay">◆ LOADING ◆</span>
+                <div class="last-score" id="lastScoreDisplay">
+                    <span class="no-score">◆ NO PRIOR DATA ◆</span>
+                </div>
+            </div>
         </a>
         
         <!-- Clear Progress Section -->
         <div class="clear-progress-section">
-            <h3>⚠️ Reset Your Progress</h3>
-            <p>this will delete your ENTIRE history so only click this if u wanna reset ur progress</p>
-            <button id="clearAllProgressBtn">Clear All Progress</button>
+            <h3>⚠️ SYSTEM RESET</h3>
+            <p>This will permanently delete all stored progress. This action cannot be undone.</p>
+            <button id="clearAllProgressBtn">⟡ RESET ALL DATA ⟡</button>
         </div>
         
         <!-- Footer -->
         <div class="footer">
-            Wiggly Inc.
+            WIGGLY INC.
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+              <h3>⟡ CONFIRM DATA RESET ⟡</h3>
+            <p>Are you sure you want to delete all your progress? This action cannot be undone.</p>
+            <div class="modal-buttons">
+                <button id="modalConfirmBtn" class="modal-btn-confirm">YES</button>
+                <button id="modalCancelBtn" class="modal-btn-cancel">NO</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // This will be populated with your questions
+        // Quiz data
+        const quizzes = [
+            {
+                id: 'mock2026',
+                name: 'Y2 MOCK 2026',
+                icon: '📡',
+                questionCount: 3,
+                link: 'quiz-mock2026.html'
+            }
+        ];
+        
         let allQuestions = [];
-      
-        // Function to load questions from localStorage
+        
+        function getQuizProgress(quizId) {
+            const progress = localStorage.getItem(`quiz_progress_${quizId}`);
+            if (progress) {
+                return JSON.parse(progress);
+            }
+            return null;
+        }
+        
+        function getLastScoreDisplay(progress) {
+            if (!progress || progress.attempts === 0) {
+                return '<span class="no-score">◆ NO PRIOR DATA ◆</span>';
+            }
+            
+            let medal = '';
+            if (progress.lastScore >= 80) medal = '🏆';
+            else if (progress.lastScore >= 60) medal = '👍';
+            else if (progress.lastScore >= 40) medal = '📚';
+            else medal = '💪';
+            
+            return `<span class="score-badge">${medal} LAST SCAN: ${progress.lastScore}%</span>`;
+        }
+        
+        function updateQuizInfo() {
+            const progress = getQuizProgress('mock2026');
+            const lastScoreHtml = getLastScoreDisplay(progress);
+            
+            document.getElementById('questionCountDisplay').innerHTML = `◆ ${quizzes[0].questionCount} QUESTIONS ◆`;
+            document.getElementById('lastScoreDisplay').innerHTML = lastScoreHtml;
+        }
+        
         function loadQuestions() {
             const stored = localStorage.getItem('mock2026_questions');
             if (stored) {
@@ -337,14 +603,13 @@
             displayResults([]);
         }
         
-        // Search function
         function searchQuestions(keyword) {
             if (!keyword.trim() || allQuestions.length === 0) {
                 return [];
             }
             
             const lowerKeyword = keyword.toLowerCase();
-            return allQuestions.filter((q, index) => {
+            return allQuestions.filter((q) => {
                 return q.question.toLowerCase().includes(lowerKeyword) ||
                        q.explanation.toLowerCase().includes(lowerKeyword) ||
                        q.options.some(opt => opt.toLowerCase().includes(lowerKeyword));
@@ -354,15 +619,14 @@
             }));
         }
         
-        // Display search results
         function displayResults(results) {
             const resultsList = document.getElementById('resultsList');
             
             if (results.length === 0) {
                 if (allQuestions.length === 0) {
-                    resultsList.innerHTML = '<div class="no-results">📚 Questions will appear here once you start the quiz.<br>Click "2026 Mock Block" above to begin.</div>';
+                    resultsList.innerHTML = '<div class="no-results">◆ INITIATE FIRST SCAN IN MOCK BLOCK ◆</div>';
                 } else {
-                    resultsList.innerHTML = '<div class="no-results">No matching questions found. Try different keywords.</div>';
+                    resultsList.innerHTML = '<div class="no-results">◆ NO MATCHING QUERIES ◆</div>';
                 }
                 return;
             }
@@ -376,26 +640,44 @@
                 
                 html += `
                     <div class="result-item" onclick="goToQuestion(${result.originalIndex})">
-                        <div class="result-question">🔍 ${questionText}</div>
-                        <div class="result-meta">Question ${result.originalIndex + 1} • Click to jump to this question</div>
+                        <div class="result-question">⟡ ${questionText}</div>
+                        <div class="result-meta">QUESTION ${result.originalIndex + 1} • TARGET TO JUMP</div>
                     </div>
                 `;
             }
             resultsList.innerHTML = html;
         }
         
-        // Navigate to the quiz and specific question
         function goToQuestion(questionId) {
             localStorage.setItem('mock2026_jumpToQuestion', questionId);
             window.location.href = 'quiz-mock2026.html';
         }
         
-        // Clear ALL progress
-        function clearAllProgress() {
-            const confirmed = confirm('⚠️ WARNING: This will permanently delete ALL your quiz progress including:\n\n- All saved answers\n- Best scores\n- Attempt history\n- Personal best records\n\nThis cannot be undone. Are you sure you want to continue?');
+        // Modal functions
+        function showConfirmationModal(onConfirm) {
+            const modal = document.getElementById('confirmationModal');
+            const confirmBtn = document.getElementById('modalConfirmBtn');
+            const cancelBtn = document.getElementById('modalCancelBtn');
             
-            if (confirmed) {
-                // Get all keys that start with 'quiz_progress_'
+            const newConfirmBtn = confirmBtn.cloneNode(true);
+            const newCancelBtn = cancelBtn.cloneNode(true);
+            confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+            cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+            
+            newConfirmBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+                onConfirm();
+            });
+            
+            newCancelBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            
+            modal.style.display = 'flex';
+        }
+        
+        function clearAllProgress() {
+            showConfirmationModal(() => {
                 const keysToRemove = [];
                 for (let i = 0; i < localStorage.length; i++) {
                     const key = localStorage.key(i);
@@ -403,19 +685,14 @@
                         keysToRemove.push(key);
                     }
                 }
-                
-                // Remove all matching keys
                 keysToRemove.forEach(key => localStorage.removeItem(key));
-                
-                // Also remove any answers stored in progress
                 localStorage.removeItem('mock2026_answers');
                 
-                // Show success message
-                alert('✅ All your progress has been cleared. The page will now refresh.');
+                updateQuizInfo();
+                loadQuestions();
                 
-                // Reload the page to reset everything
-                window.location.reload();
-            }
+                alert('✅ SYSTEM DELETION COMPLETED');
+            });
         }
         
         // Event listeners
@@ -440,7 +717,8 @@
         
         document.getElementById('clearAllProgressBtn').addEventListener('click', clearAllProgress);
         
-        // Load questions when page loads
+        // Initial load
+        updateQuizInfo();
         loadQuestions();
     </script>
 </body>
