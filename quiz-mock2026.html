@@ -1,125 +1,192 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>UKMLA 2026 Mock Block - SBA Questions</title>
+    <title>WigglyInc - Y2 Mock 2026</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: #eef2f3;
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #0f172a 100%);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            padding: 20px;
+            position: relative;
         }
+        
+        /* Animated background grid */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 170, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 170, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Subtle pulsing orb */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(0, 170, 255, 0.03) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
         .quiz-box {
+            position: relative;
+            z-index: 1;
             max-width: 800px;
             width: 100%;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 170, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             padding: 30px;
         }
+        
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #e0e0e0;
+            border-bottom: 1px solid rgba(0, 170, 255, 0.2);
             flex-wrap: wrap;
             gap: 10px;
         }
+        
         .question-number {
-            background: #0077b6;
-            color: white;
+            background: rgba(0, 170, 255, 0.15);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            color: #00aaff;
             padding: 8px 18px;
             border-radius: 25px;
             font-weight: bold;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
         }
+        
         .progress-stats {
-            background: #e8f4f8;
+            background: rgba(0, 170, 255, 0.1);
             padding: 8px 15px;
             border-radius: 25px;
             font-size: 0.85rem;
-            color: #0077b6;
+            color: #00aaff;
             font-weight: bold;
         }
+        
         .search-nav {
-            background: #f1f5f9;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 8px 15px;
             border-radius: 25px;
             font-size: 0.85rem;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.7);
         }
+        
         .search-nav:hover {
-            background: #e2e8f0;
+            background: rgba(0, 170, 255, 0.2);
+            border-color: #00aaff;
+            color: #00aaff;
         }
+        
         .reset-quiz-btn {
-            background: #fef3c7;
-            color: #92400e;
+            background: rgba(255, 200, 0, 0.1);
+            border: 1px solid rgba(255, 200, 0, 0.3);
+            color: #fbbf24;
             padding: 8px 15px;
             border-radius: 25px;
             font-size: 0.85rem;
             cursor: pointer;
-            transition: background 0.2s;
-            border: none;
+            transition: all 0.3s ease;
             font-weight: bold;
         }
+        
         .reset-quiz-btn:hover {
-            background: #fde68a;
+            background: rgba(255, 200, 0, 0.2);
+            box-shadow: 0 0 10px rgba(255, 200, 0, 0.2);
         }
+        
         .question-text {
             font-size: 1.3rem;
-            color: #023047;
+            color: white;
             margin-bottom: 25px;
             line-height: 1.5;
+            font-weight: 300;
         }
+        
         .options {
             display: flex;
             flex-direction: column;
             gap: 12px;
             margin-bottom: 30px;
         }
+        
         .option-btn {
-            background: white;
-            border: 2px solid #cbd5e0;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             padding: 15px 20px;
             font-size: 1rem;
             text-align: left;
             cursor: pointer;
             transition: all 0.2s ease;
+            color: rgba(255, 255, 255, 0.9);
         }
+        
         .option-btn:hover:not(:disabled) {
-            background: #f0f9ff;
-            border-color: #0284c7;
+            background: rgba(0, 170, 255, 0.15);
+            border-color: #00aaff;
         }
+        
         .option-btn.correct {
-            background: #86efac;
-            border-color: #15803d;
-            color: #14532d;
+            background: rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+            color: #22c55e;
         }
+        
         .option-btn.incorrect {
-            background: #fecaca;
-            border-color: #b91c1c;
-            color: #7f1d1d;
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            color: #ef4444;
         }
+        
         .option-btn:disabled {
             cursor: not-allowed;
-            opacity: 0.7;
+            opacity: 0.6;
         }
+        
         .explanation-box {
-            background: #f8fafc;
-            border-left: 6px solid #0284c7;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #00aaff;
             padding: 20px;
             border-radius: 8px;
             margin: 25px 0;
             font-style: italic;
-            color: #1e293b;
+            color: rgba(255, 255, 255, 0.8);
         }
+        
         .navigation-buttons {
             display: flex;
             justify-content: space-between;
@@ -128,64 +195,87 @@
             flex-wrap: wrap;
             gap: 15px;
         }
+        
         .prev-btn, .next-btn {
-            background: #0077b6;
-            color: white;
-            border: none;
+            background: rgba(0, 170, 255, 0.15);
+            border: 1px solid rgba(0, 170, 255, 0.5);
+            color: #00aaff;
             padding: 12px 25px;
             font-size: 1rem;
             border-radius: 40px;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
         }
+        
         .prev-btn:disabled, .next-btn:disabled {
-            background: #94a3b8;
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.3);
             cursor: not-allowed;
         }
+        
         .prev-btn:hover:not(:disabled), .next-btn:hover:not(:disabled) {
-            background: #023e8a;
+            background: rgba(0, 170, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.3);
         }
+        
         .question-jumper {
             display: flex;
             gap: 10px;
             align-items: center;
         }
+        
         #questionJump {
             width: 60px;
             padding: 8px;
-            border: 2px solid #cbd5e0;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 170, 255, 0.3);
             border-radius: 8px;
             text-align: center;
-        }
-        .jump-btn {
-            background: #64748b;
             color: white;
-            border: none;
+        }
+        
+        .jump-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
             padding: 8px 15px;
             border-radius: 20px;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
+        
+        .jump-btn:hover {
+            background: rgba(0, 170, 255, 0.2);
+            border-color: #00aaff;
+        }
+        
         .score-box {
             text-align: center;
             padding: 40px;
         }
+        
         .score-box h2 {
-            color: #023047;
+            color: #00aaff;
             font-size: 2rem;
             margin-bottom: 20px;
+            letter-spacing: 2px;
         }
+        
         .personal-best {
-            background: #fef3c7;
+            background: rgba(0, 0, 0, 0.3);
             padding: 15px;
             border-radius: 10px;
             margin: 20px 0;
-            border-left: 4px solid #f59e0b;
+            border-left: 4px solid #fbbf24;
+            color: rgba(255, 255, 255, 0.8);
         }
+        
         .restart-btn, .back-home {
-            background: #0077b6;
-            color: white;
-            border: none;
+            background: rgba(0, 170, 255, 0.15);
+            border: 1px solid rgba(0, 170, 255, 0.5);
+            color: #00aaff;
             padding: 12px 30px;
             font-size: 1.1rem;
             border-radius: 40px;
@@ -194,28 +284,42 @@
             margin-right: 10px;
             text-decoration: none;
             display: inline-block;
+            transition: all 0.3s ease;
         }
+        
+        .restart-btn:hover, .back-home:hover {
+            background: rgba(0, 170, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.3);
+        }
+        
         .back-home {
-            background: #64748b;
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.7);
         }
+        
         .back-home:hover {
-            background: #475569;
+            background: rgba(255, 255, 255, 0.1);
         }
+        
         .clear-progress-btn {
-            background: #dc2626;
-            color: white;
-            border: none;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #ef4444;
             padding: 12px 30px;
             font-size: 1.1rem;
             border-radius: 40px;
             cursor: pointer;
             margin-top: 20px;
-        }
-        .clear-progress-btn:hover {
-            background: #b91c1c;
+            transition: all 0.3s ease;
         }
         
-        /* --- Modal Styles --- */
+        .clear-progress-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+        }
+        
+        /* Modal - J.A.R.V.I.S. style */
         .modal {
             display: none;
             position: fixed;
@@ -224,35 +328,35 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
             justify-content: center;
             align-items: center;
         }
         
         .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 20px;
             max-width: 400px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            box-shadow: 0 0 40px rgba(0, 170, 255, 0.2);
         }
         
         .modal-content h3 {
-            color: #023047;
+            color: #00aaff;
             margin-bottom: 15px;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
         }
         
         .modal-content p {
-            color: #475569;
+            color: rgba(255, 255, 255, 0.6);
             margin-bottom: 25px;
-            line-height: 1.5;
-        }
-        
-        .modal-content.warning h3 {
-            color: #dc2626;
+            line-height: 1.6;
         }
         
         .modal-buttons {
@@ -262,35 +366,38 @@
         }
         
         .modal-btn-confirm {
-            background: #dc2626;
-            color: white;
-            border: none;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #ef4444;
             padding: 10px 25px;
-            border-radius: 40px;
+            border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
+            transition: all 0.3s ease;
         }
         
         .modal-btn-cancel {
-            background: #94a3b8;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
-            border: none;
             padding: 10px 25px;
-            border-radius: 40px;
+            border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
+            transition: all 0.3s ease;
         }
         
         .modal-btn-confirm:hover {
-            background: #b91c1c;
+            background: rgba(239, 68, 68, 0.4);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
         }
         
         .modal-btn-cancel:hover {
-            background: #64748b;
+            background: rgba(255, 255, 255, 0.2);
         }
         
         .success-modal .modal-content {
-            border-top: 4px solid #22c55e;
+            border-color: #22c55e;
         }
         
         .clearfix::after {
@@ -313,6 +420,9 @@
             .question-jumper {
                 order: 3;
             }
+            .question-text {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
@@ -321,24 +431,24 @@
         <!-- Content will be loaded here by JavaScript -->
     </div>
     
-    <!-- Custom Modal -->
+    <!-- Modal -->
     <div id="confirmationModal" class="modal">
-        <div class="modal-content warning">
-            <h3 id="modalTitle">⚠️ Warning</h3>
-            <p id="modalMessage">Are you sure you want to reset all your progress? This cannot be undone.</p>
+        <div class="modal-content">
+            <h3>⟡ CONFIRM DATA RESET ⟡</h3>
+            <p>Are you sure you want to delete all your progress? This action cannot be undone.</p>
             <div class="modal-buttons">
-                <button id="modalConfirmBtn" class="modal-btn-confirm">Yes, Reset</button>
-                <button id="modalCancelBtn" class="modal-btn-cancel">Cancel</button>
+                <button id="modalConfirmBtn" class="modal-btn-confirm">YES</button>
+                <button id="modalCancelBtn" class="modal-btn-cancel">NO</button>
             </div>
         </div>
     </div>
     
     <div id="successModal" class="modal">
         <div class="modal-content success-modal">
-            <h3>✅ Success!</h3>
-            <p id="successMessage">Your progress has been reset.</p>
+            <h3>⟡ SYSTEM RESET COMPLETE ⟡</h3>
+            <p id="successMessage">All progress has been cleared.</p>
             <div class="modal-buttons">
-                <button id="successOkBtn" class="modal-btn-confirm" style="background: #22c55e;">OK</button>
+                <button id="successOkBtn" class="modal-btn-confirm" style="background: rgba(34, 197, 94, 0.2); border-color: #22c55e; color: #22c55e;">ACKNOWLEDGE</button>
             </div>
         </div>
     </div>
@@ -406,10 +516,11 @@
             const confirmBtn = document.getElementById('modalConfirmBtn');
             const cancelBtn = document.getElementById('modalCancelBtn');
             
-            modalTitle.textContent = title;
-            modalMessage.textContent = message;
+            if (modalTitle && modalMessage) {
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+            }
             
-            // Remove previous event listeners
             const newConfirmBtn = confirmBtn.cloneNode(true);
             const newCancelBtn = cancelBtn.cloneNode(true);
             confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
@@ -434,7 +545,6 @@
             
             successMessage.textContent = message;
             
-            // Remove previous event listener
             const newOkBtn = okBtn.cloneNode(true);
             okBtn.parentNode.replaceChild(newOkBtn, okBtn);
             
@@ -484,10 +594,9 @@
         // --- RESET FUNCTIONS ---
         function resetQuizOnly() {
             showConfirmationModal(
-                '🔄 Reset Current Quiz',
-                'This will clear ALL your answers for this quiz. Your best score and attempt history will NOT be affected. You can start fresh. Are you sure?',
+                '⟡ RESET CURRENT QUIZ ⟡',
+                'This will clear ALL your answers for this quiz. Your best score and attempt history will NOT be affected. Are you sure?',
                 () => {
-                    // Reset only answers, keep progress stats
                     userAnswers = new Array(questions.length).fill(null);
                     currentQuestionIndex = 0;
                     const progress = getStoredProgress();
@@ -501,8 +610,8 @@
         
         function clearAllProgress() {
             showConfirmationModal(
-                '⚠️ DELETE ALL PROGRESS',
-                'This will permanently delete ALL your progress including:\n\n• All saved answers\n• Best scores\n• Attempt history\n\nThis cannot be undone. Are you absolutely sure?',
+                '⟡ DELETE ALL PROGRESS ⟡',
+                'This will permanently delete ALL your progress including: All saved answers, Best scores, Attempt history. This cannot be undone. Are you absolutely sure?',
                 () => {
                     localStorage.removeItem(`quiz_progress_${QUIZ_NAME}`);
                     userAnswers = new Array(questions.length).fill(null);
@@ -561,7 +670,7 @@
                     <span class="question-number">Question ${currentQuestionIndex + 1} of ${questions.length}</span>
                     <span class="progress-stats">🏆 Best: ${progress.bestScore}%</span>
                     <span class="search-nav" onclick="goToHomepage()">🔍 Search Questions</span>
-                    <button class="reset-quiz-btn" onclick="resetQuizOnly()">🔄 Reset Answers</button>
+                    <button class="reset-quiz-btn" onclick="resetQuizOnly()">⟳ Reset Answers</button>
                 </div>
                 <div class="question-text">${q.question}</div>
                 <div class="options" id="optionsContainer">
@@ -629,7 +738,7 @@
             const progress = getStoredProgress();
             progress.answers = userAnswers;
             saveProgress(progress);
-            window.location.href = 'index.html';
+            window.location.href = 'home.html';
         }
         
         window.resetQuizOnly = resetQuizOnly;
@@ -649,9 +758,9 @@
                 const isCorrect = userAnswers[i] === questions[i].correct;
                 const statusEmoji = isCorrect ? '✅' : '❌';
                 detailedResults += `
-                    <div style="padding: 10px; margin: 5px 0; background: ${isCorrect ? '#e6f7e6' : '#ffe6e6'}; border-radius: 8px;">
+                    <div style="padding: 10px; margin: 5px 0; background: ${isCorrect ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)'}; border-radius: 8px; border-left: 3px solid ${isCorrect ? '#22c55e' : '#ef4444'};">
                         <strong>${statusEmoji} Question ${i + 1}:</strong> ${questions[i].question.substring(0, 100)}...
-                        ${!isCorrect ? `<br><span style="font-size: 0.85rem; color: #666;">Correct answer: ${questions[i].options[questions[i].correct]}</span>` : ''}
+                        ${!isCorrect ? `<br><span style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.5);">Correct answer: ${questions[i].options[questions[i].correct]}</span>` : ''}
                     </div>
                 `;
             }
@@ -659,11 +768,11 @@
             quizContainer.innerHTML = `
                 <div class="score-box">
                     <h2>🎉 Mock Block Complete!</h2>
-                    <p style="font-size: 1.2rem; margin: 20px 0;">You scored <strong>${correctCount}</strong> out of <strong>${questions.length}</strong></p>
-                    <div style="background: #e9ecef; height: 25px; width: 100%; border-radius: 30px; margin: 20px 0; overflow: hidden;">
-                        <div style="background: #0077b6; width: ${percentage}%; height: 100%;"></div>
+                    <p style="font-size: 1.2rem; margin: 20px 0; color: rgba(255, 255, 255, 0.8);">You scored <strong style="color: #00aaff;">${correctCount}</strong> out of <strong style="color: #00aaff;">${questions.length}</strong></p>
+                    <div style="background: rgba(255, 255, 255, 0.1); height: 25px; width: 100%; border-radius: 30px; margin: 20px 0; overflow: hidden;">
+                        <div style="background: #00aaff; width: ${percentage}%; height: 100%; box-shadow: 0 0 10px #00aaff;"></div>
                     </div>
-                    <p style="font-size: 1.5rem; font-weight: bold; color: #023047;">${percentage}%</p>
+                    <p style="font-size: 1.5rem; font-weight: bold; color: #00aaff;">${percentage}%</p>
                     <div class="personal-best">
                         <strong>📊 Your Progress</strong><br>
                         🏆 Best Score: ${progress.bestScore}%<br>
@@ -672,14 +781,14 @@
                         ${percentage > progress.bestScore && progress.attempts > 1 ? '<br>🎉 NEW PERSONAL BEST! 🎉' : ''}
                     </div>
                     <details style="margin: 20px 0; text-align: left;">
-                        <summary style="cursor: pointer; color: #0077b6; font-weight: bold;">📋 View Detailed Results</summary>
+                        <summary style="cursor: pointer; color: #00aaff; font-weight: bold;">📋 View Detailed Results</summary>
                         <div style="margin-top: 15px; max-height: 400px; overflow-y: auto;">
                             ${detailedResults}
                         </div>
                     </details>
                     <div style="margin-top: 30px;">
-                        <button class="restart-btn" onclick="restartQuiz()">🔄 Try Again</button>
-                        <a href="index.html" class="back-home">🏠 Back to Home</a>
+                        <button class="restart-btn" onclick="restartQuiz()">⟳ Try Again</button>
+                        <a href="home.html" class="back-home">🏠 Back to Home</a>
                         <button class="clear-progress-btn" onclick="clearAllProgress()">🗑️ Delete All Progress</button>
                     </div>
                 </div>
