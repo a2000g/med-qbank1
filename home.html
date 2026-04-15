@@ -17,7 +17,7 @@
             overflow-x: hidden;
         }
         
-        /* Animated background grid (J.A.R.V.I.S. style) */
+        /* Animated background grid */
         body::before {
             content: "";
             position: fixed;
@@ -33,7 +33,7 @@
             z-index: 0;
         }
         
-        /* Subtle pulsing orb in background */
+        /* Subtle pulsing orb */
         body::after {
             content: "";
             position: fixed;
@@ -55,7 +55,7 @@
             padding: 40px 20px;
         }
         
-        /* Header - Wayne Industries style */
+        /* Header */
         .header {
             text-align: center;
             margin-bottom: 60px;
@@ -68,7 +68,6 @@
         }
         
         .company-icon {
-            font-size: 3rem;
             filter: drop-shadow(0 0 10px rgba(0, 170, 255, 0.5));
         }
         
@@ -78,15 +77,6 @@
             letter-spacing: 8px;
             font-weight: 300;
             margin-top: 10px;
-            text-transform: uppercase;
-        }
-        
-        h1 {
-            color: white;
-            font-size: 2.5rem;
-            font-weight: 300;
-            letter-spacing: 4px;
-            margin-bottom: 15px;
             text-transform: uppercase;
         }
         
@@ -106,7 +96,7 @@
             opacity: 0.7;
         }
         
-        /* Search Section - Glass morphism */
+        /* Search Section */
         .search-section {
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(10px);
@@ -244,7 +234,7 @@
             letter-spacing: 1px;
         }
         
-        /* Quiz Cards - Glass morphism */
+        /* Quiz Card */
         .quiz-card {
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(10px);
@@ -381,7 +371,7 @@
             text-transform: uppercase;
         }
         
-        /* Modal - J.A.R.V.I.S. style */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -464,11 +454,6 @@
                 padding: 20px 15px;
             }
             
-            h1 {
-                font-size: 1.5rem;
-                letter-spacing: 3px;
-            }
-            
             .search-box {
                 flex-direction: column;
             }
@@ -481,13 +466,12 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header - Wayne Industries style -->
+        <!-- Header -->
         <div class="header">
             <div class="company-badge">
-                
-<div class="company-icon">
-    <img src="https://github.com/a2000g/med-qbank1/blob/main/W%20Logo.png?raw=true" alt="WigglyInc Logo" style="width: 60px; height: 60px; object-fit: contain;">
-</div>
+                <div class="company-icon">
+                    <img src="https://raw.githubusercontent.com/a2000g/med-qbank1/main/W%20Logo.png" alt="WigglyInc Logo" style="width: 60px; height: 60px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(0, 170, 255, 0.5));">
+                </div>
                 <div class="company-name">WIGGLY INC.</div>
             </div>
             <div class="subtitle">UKMLA SBAs</div>
@@ -498,6 +482,9 @@
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="search for a question">
                 <button id="searchBtn">⟳ SEARCH</button>
+            </div>
+            <div class="search-info">
+                ◆ TYPE KEYWORD ◆ PRESS SEARCH ◆
             </div>
         </div>
         
@@ -540,7 +527,7 @@
     <!-- Modal -->
     <div id="confirmationModal" class="modal">
         <div class="modal-content">
-              <h3>⟡ CONFIRM DATA RESET ⟡</h3>
+            <h3>⟡ CONFIRM DATA RESET ⟡</h3>
             <p>Are you sure you want to delete all your progress? This action cannot be undone.</p>
             <div class="modal-buttons">
                 <button id="modalConfirmBtn" class="modal-btn-confirm">YES</button>
@@ -562,6 +549,49 @@
         ];
         
         let allQuestions = [];
+        
+        // --- FIX: Load questions directly from the quiz file ---
+        async function loadQuestionsFromQuiz() {
+            try {
+                // First, try to get from localStorage
+                const stored = localStorage.getItem('mock2026_questions');
+                if (stored) {
+                    allQuestions = JSON.parse(stored);
+                    console.log('Questions loaded from localStorage:', allQuestions.length);
+                    displayResults([]);
+                    return;
+                }
+                
+                // If not in localStorage, fetch from the quiz file
+                console.log('Fetching questions from quiz file...');
+                const response = await fetch('quiz-mock2026.html');
+                const htmlText = await response.text();
+                
+                // Extract the questions array from the HTML
+                const match = htmlText.match(/const questions = (\[[\s\S]*?\]);/);
+                if (match && match[1]) {
+                    // Parse the questions array
+                    const questionsArray = eval(match[1]);
+                    allQuestions = questionsArray.map(q => ({
+                        id: q.id,
+                        question: q.question,
+                        options: q.options,
+                        explanation: q.explanation
+                    }));
+                    
+                    // Store in localStorage for next time
+                    localStorage.setItem('mock2026_questions', JSON.stringify(allQuestions));
+                    console.log('Questions loaded from quiz file:', allQuestions.length);
+                } else {
+                    console.log('Could not find questions in quiz file');
+                    allQuestions = [];
+                }
+            } catch (error) {
+                console.error('Error loading questions:', error);
+                allQuestions = [];
+            }
+            displayResults([]);
+        }
         
         function getQuizProgress(quizId) {
             const progress = localStorage.getItem(`quiz_progress_${quizId}`);
@@ -593,16 +623,6 @@
             document.getElementById('lastScoreDisplay').innerHTML = lastScoreHtml;
         }
         
-        function loadQuestions() {
-            const stored = localStorage.getItem('mock2026_questions');
-            if (stored) {
-                allQuestions = JSON.parse(stored);
-            } else {
-                allQuestions = [];
-            }
-            displayResults([]);
-        }
-        
         function searchQuestions(keyword) {
             if (!keyword.trim() || allQuestions.length === 0) {
                 return [];
@@ -624,7 +644,7 @@
             
             if (results.length === 0) {
                 if (allQuestions.length === 0) {
-                    resultsList.innerHTML = '<div class="no-results">◆ INITIATE FIRST SCAN IN MOCK BLOCK ◆</div>';
+                    resultsList.innerHTML = '<div class="no-results">◆ LOADING QUESTIONS... CLICK MOCK BLOCK FIRST ◆</div>';
                 } else {
                     resultsList.innerHTML = '<div class="no-results">◆ NO MATCHING QUERIES ◆</div>';
                 }
@@ -689,7 +709,7 @@
                 localStorage.removeItem('mock2026_answers');
                 
                 updateQuizInfo();
-                loadQuestions();
+                loadQuestionsFromQuiz();
                 
                 alert('✅ SYSTEM DELETION COMPLETED');
             });
@@ -719,7 +739,7 @@
         
         // Initial load
         updateQuizInfo();
-        loadQuestions();
+        loadQuestionsFromQuiz();
     </script>
 </body>
 </html>
