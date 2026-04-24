@@ -20,7 +20,6 @@
             position: relative;
         }
         
-        /* Animated background grid */
         body::before {
             content: "";
             position: fixed;
@@ -36,7 +35,6 @@
             z-index: 0;
         }
         
-        /* Subtle pulsing orb */
         body::after {
             content: "";
             position: fixed;
@@ -183,8 +181,9 @@
             padding: 20px;
             border-radius: 8px;
             margin: 25px 0;
-            font-style: italic;
             color: rgba(255, 255, 255, 0.8);
+            white-space: pre-line;
+            line-height: 1.6;
         }
         
         .navigation-buttons {
@@ -319,7 +318,6 @@
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
         }
         
-        /* Modal - J.A.R.V.I.S. style */
         .modal {
             display: none;
             position: fixed;
@@ -427,14 +425,11 @@
     </style>
 </head>
 <body>
-    <div class="quiz-box" id="quizContainer">
-        <!-- Content will be loaded here by JavaScript -->
-    </div>
+    <div class="quiz-box" id="quizContainer"></div>
     
-    <!-- Modal -->
     <div id="confirmationModal" class="modal">
         <div class="modal-content">
-            <h3>⟡ CONFIRM DATA RESET ⟡</h3>
+            <h3>CONFIRM DATA RESET</h3>
             <p>Are you sure you want to delete all your progress? This action cannot be undone.</p>
             <div class="modal-buttons">
                 <button id="modalConfirmBtn" class="modal-btn-confirm">YES</button>
@@ -445,7 +440,7 @@
     
     <div id="successModal" class="modal">
         <div class="modal-content success-modal">
-            <h3>⟡ SYSTEM RESET COMPLETE ⟡</h3>
+            <h3>SYSTEM RESET COMPLETE</h3>
             <p id="successMessage">All progress has been cleared.</p>
             <div class="modal-buttons">
                 <button id="successOkBtn" class="modal-btn-confirm" style="background: rgba(34, 197, 94, 0.2); border-color: #22c55e; color: #22c55e;">ACKNOWLEDGE</button>
@@ -454,53 +449,791 @@
     </div>
 
     <script>
-        // --- QUIZ ID ---
         const QUIZ_NAME = 'mock2026';
         
-        // --- ALL YOUR QUESTIONS TOGETHER (2026 MOCK BLOCK) ---
         const questions = [
             {
                 id: 0,
-                question: "A 65-year-old man with a history of hypertension and smoking presents with sudden, severe central chest pain radiating to his back. His blood pressure is 160/90 mmHg in the right arm and 110/70 mmHg in the left arm. What is the most likely diagnosis?",
+                question: "Based on previous research evidence, which of the following mental health disorders is considered a risk factor for cardiac mortality in patients with Coronary Heart Disease (CHD)?",
                 options: [
-                    "Myocardial Infarction",
-                    "Pulmonary Embolism", 
-                    "Aortic Dissection",
-                    "Acute Pericarditis",
-                    "Boerhaave Syndrome"
+                    "Brief psychotic disorder",
+                    "Bulimia nervosa",
+                    "Depression",
+                    "Generalized anxiety disorder",
+                    "Obsessive-compulsive disorder"
                 ],
                 correct: 2,
-                explanation: "The correct answer is Aortic Dissection. The key clues are: tearing pain radiating to the back, and a significant blood pressure difference between arms (pulse deficit), which suggests involvement of the aortic branches."
+                explanation: "Correct Answer: 3 (57.3% got this correct)\n\nDepression is an independent risk factor for increased mortality in patients with Coronary Heart Disease (CHD).\n\nClinical Impact:\nIncreased risk of recurrent myocardial infarction\nIncreased hospital readmissions\nIncreased all-cause and cardiac mortality\n\nTake-Home Message:\nScreening and managing depression is an important component of secondary prevention in CHD."
             },
             {
                 id: 1,
-                question: "A 28-year-old woman presents with 3 days of palpitations, heat intolerance, and weight loss. On examination, she has a fine tremor, warm moist skin, and a diffuse goiter with a bruit. What is the single most appropriate initial investigation?",
+                question: "A researcher is seeking to examine whether long-term mobile phone use is linked to acoustic neuroma risk. The information on mobile phone usage is collected from participants with acoustic neuroma and a comparable group of participants without acoustic neuroma, selected from the general practice register. Which type of study design is being used?",
                 options: [
-                    "Thyroid ultrasound",
-                    "TSH, FT4, and FT3",
-                    "Thyroid antibody tests",
-                    "Radioiodine uptake scan",
-                    "Fine needle aspiration"
+                    "Case-control study",
+                    "Case series",
+                    "Cohort study",
+                    "Cross-sectional study",
+                    "Ecological study"
                 ],
-                correct: 1,
-                explanation: "TSH, FT4, and FT3 are the correct initial tests. This presentation suggests thyrotoxicosis. Thyroid function tests (TFTs) confirm the diagnosis and distinguish between overt and subclinical disease."
+                correct: 0,
+                explanation: "Correct Answer: 1 (60.3% got this correct)\n\nStudy Design: Case-Control Study\n\nParticipants are selected based on disease status:\nCases: Acoustic neuroma\nControls: No acoustic neuroma\nComparison made between exposure rates in cases vs controls\n\nImportant point: Differentiate from Randomized controlled trial (RCT)."
             },
             {
                 id: 2,
-                question: "Which of the following is the most common causative organism in community-acquired pneumonia in a previously healthy adult?",
+                question: "A 42-year-old man with type 1 diabetes presents with sepsis secondary to a foot ulcer. He is alert, coherent, and refuses IV antibiotics, stating he \"is fed up of being poked and prodded.\" He is able to understand the information given, weigh up the risks and benefits, including death. What is the most appropriate course of action?",
                 options: [
-                    "Haemophilus influenzae",
-                    "Mycoplasma pneumoniae",
-                    "Staphylococcus aureus",
-                    "Streptococcus pneumoniae",
-                    "Legionella pneumophila"
+                    "Administer under MHA",
+                    "Detain under DoLS",
+                    "Request second opinion",
+                    "Respect decision & document capacity",
+                    "Seek next of kin consent"
                 ],
                 correct: 3,
-                explanation: "Streptococcus pneumoniae is the most common bacterial cause of community-acquired pneumonia in adults. Viruses are also common, but among bacterial causes, S. pneumoniae is the leading pathogen."
+                explanation: "Correct Answer: 4 (93.9% got this correct)\n\nKey Principle\nA capacitous adult has the right to refuse treatment — even life-saving treatment.\n\nPatient must be able to:\nUnderstand information\nRetain information\nWeigh information\nCommunicate decision\nAll four are satisfied in this case.\nIf patient has capacity, then autonomy overrides beneficence\n\nSummary\nIf capacity is intact → Respect refusal and document clearly"
+            },
+            {
+                id: 3,
+                question: "An 85-year-old man with end-stage COPD is admitted with pneumonia. The team believes CPR would not be appropriate due to multi-organ failure. He lacks capacity due to delirium. There is no advance decision or lasting power of attorney. What is the most appropriate action?",
+                options: [
+                    "Apply for court ruling",
+                    "Make DNACPR decision in best interests",
+                    "Proceed CPR",
+                    "Wait for capacity",
+                    "Withhold & inform after"
+                ],
+                correct: 1,
+                explanation: "Correct Answer: 2 (93.1% got this correct)\n\nKey Principle\nIf a patient lacks capacity and CPR is not clinically appropriate → Make a best interests DNACPR decision\n\nFamily member would have to have LPA (lasting power or attorney), to override the DNACPR decision made by the clinician."
+            },
+            {
+                id: 4,
+                question: "Which ethical principle is instrumental in the process of consent?",
+                options: [
+                    "Autonomy",
+                    "Beneficence",
+                    "Confidentiality",
+                    "Non-maleficence",
+                    "Veracity"
+                ],
+                correct: 0,
+                explanation: "Correct Answer: 1 (96.2% got this correct)\n\nBeneficence: The duty of healthcare professionals to act in the patient's best interests and promote wellbeing.\nNon-Maleficence: The duty to avoid causing harm.\nVeracity: The duty to tell the truth and provide honest information to patients."
+            },
+            {
+                id: 5,
+                question: "A patient with chronic asthma who is prescribed atenolol experiences shortness of breath and wheezing. Which is the most likely mechanism for the adverse drug reactions to explain the clinical problem?",
+                options: [
+                    "Idiosyncratic reaction caused by Type 1, immunologically mediated hypersensitivity",
+                    "Idiosyncratic reaction made more likely by co-morbidity",
+                    "Pharmacodynamic drug interaction",
+                    "Pharmacokinetic drug interaction due to change in elimination by metabolism",
+                    "Predictable reaction made more likely by comorbidity"
+                ],
+                correct: 4,
+                explanation: "Correct Answer: 5 (32.28% got this correct)\n\nKey Concept\nBeta-blockers can worsen asthma due to beta-2 receptor blockade\n\nMechanism\nBeta-2 receptors → bronchodilation\nBlockade → bronchoconstriction"
+            },
+            {
+                id: 6,
+                question: "A 26-year-old man with type 1 diabetes presents with a Herpes Zoster (shingles) rash in the distribution indicated in the photograph. Which dermatome best describes this distribution? [IMAGE REQUIRED - SEE NOTE AT END]",
+                options: [
+                    "T2",
+                    "T4",
+                    "T6",
+                    "T8",
+                    "T10"
+                ],
+                correct: 1,
+                explanation: "Correct Answer: 2 (50.4% got this correct)\n\nThe rash runs horizontally across the anterior chest\nIt aligns approximately with the nipple line\nThe nipple corresponds anatomically to the T4 dermatome\n\nKey anatomical landmark:\nT4 = Nipple line"
+            },
+            {
+                id: 7,
+                question: "Which of the following receptors is activated by the post-ganglionic fibres of the sympathetic nervous system?",
+                options: [
+                    "Beta adrenergic receptors",
+                    "GABA receptors",
+                    "Glutamate receptors",
+                    "Muscarinic receptors",
+                    "Nicotinic acetylcholine receptors"
+                ],
+                correct: 0,
+                explanation: "Correct Answer: 1\n\nIn the sympathetic nervous system (SNS):\nPreganglionic fibres release acetylcholine (ACh) → act on nicotinic receptors in the ganglion.\nPostganglionic fibres usually release noradrenaline (norepinephrine).\nNoradrenaline acts on adrenergic receptors (alpha and beta receptors) at target organs\n\nExam Tip\nSympathetic target organs → think adrenergic receptors\n(Exception: Sweat glands use muscarinic receptors.)"
+            },
+            {
+                id: 8,
+                question: "Which of the following statements about muscle is correct?",
+                options: [
+                    "Ryanodine receptors are expressed on sarcolemma",
+                    "Skeletal fibres are branched",
+                    "Spread of depolarization is facilitated by gap junctions in cardiac muscle",
+                    "Troponin binds to sodium",
+                    "Type IIb fibres are slow twitch, fatigue resistant"
+                ],
+                correct: 2,
+                explanation: "Correct Answer: 3 (85.5% got this correct)\n\nCardiac muscle cells are connected by intercalated discs, which contain:\nGap junctions → allow direct electrical coupling\nEnable rapid spread of depolarisation\nAllow the myocardium to function as a functional syncytium"
+            },
+            {
+                id: 9,
+                question: "A 52-year-old man dies in hospital from a severe respiratory infection, and tuberculosis is suspected. A post-mortem specimen of affected lung tissue is sent to the laboratory for examination. Which finding would support the diagnosis of tuberculosis?",
+                options: [
+                    "Caseous necrosis",
+                    "Coagulative necrosis",
+                    "Fibrinoid necrosis",
+                    "Gangrenous necrosis",
+                    "Liquefactive necrosis"
+                ],
+                correct: 0,
+                explanation: "Correct Answer: 1 (94.7% got this correct)\n\nTuberculosis (TB), caused by Mycobacterium tuberculosis, characteristically produces caseating granulomatous inflammation"
+            },
+            {
+                id: 10,
+                question: "A 36-year-old woman returned from a trip to Japan 2 days ago. Yesterday she started experiencing left calf pain. The woman is afebrile with a heart rate of 82 bpm, a blood pressure of 129/86 mm Hg, and a respiratory rate of 14/min. On examination, the patient's calf pain is found to intensify on dorsiflexion of the left foot. Suspecting a deep venous thrombosis (DVT), the physician performs a venous ultrasound, which confirms the diagnosis. Which of the following factors is most responsible in the formation of the DVT?",
+                options: [
+                    "Leukotriene C4",
+                    "Prostaglandin I2",
+                    "Renin",
+                    "Thromboxane A2",
+                    "Vascular endothelial growth factor"
+                ],
+                correct: 3,
+                explanation: "Correct Answer: 4 (82.4% got this correct)\n\nThromboxane A2 (TXA2):\nProduced by activated platelets\nPromotes platelet aggregation\nCauses vasoconstriction\nEnhances thrombus formation\nTherefore, TXA2 plays a direct pro-thrombotic role."
+            },
+            {
+                id: 11,
+                question: "A 27-year-old woman presents to her GP with episodic bouts of breathlessness associated with tingling in the face and arms. She is never troubled with symptoms in the night. Her chest examination is normal and her oxygen saturation 100%. What is the most likely diagnosis?",
+                options: [
+                    "Anxiety",
+                    "Asthma",
+                    "Bronchiectasis",
+                    "Community acquired pneumonia",
+                    "Pulmonary embolism"
+                ],
+                correct: 0,
+                explanation: "Correct Answer: 1 (95.4% got this correct)\n\nAppears like panic attacks / anxiety-related hyperventilation."
+            },
+            {
+                id: 12,
+                question: "A 43-year-old male presents with symptoms suggestive of pulmonary tuberculosis. Which of the following is the most appropriate first imaging investigation?",
+                options: [
+                    "CT scan",
+                    "PET scan",
+                    "MRI",
+                    "Ultrasound",
+                    "X-ray"
+                ],
+                correct: 4,
+                explanation: "Correct Answer: 5 (95.4% got this correct)\n\nIn suspected pulmonary tuberculosis (TB), the first-line imaging investigation is a chest X-ray (CXR).\n\nImaging Approach\nChest X-ray\nSputum AFB testing / PCR\nCT if needed"
+            },
+            {
+                id: 13,
+                question: "Bronchiolitis is typically found in which age group?",
+                options: [
+                    "<1 year",
+                    "1-2 years",
+                    "2-5 years",
+                    "5-8 years",
+                    "8-12 years"
+                ],
+                correct: 0,
+                explanation: "Correct Answer: 1 (69.5% got this correct)\n\nBronchiolitis typically affects infants under 1 year of age, with peak incidence between 3-6 months."
+            },
+            {
+                id: 14,
+                question: "Which of the following statements is most accurate regarding cardiac muscle cells?",
+                options: [
+                    "Intercalated discs contain desmosomes which are directly responsible for electrochemical and metabolic coupling",
+                    "Intercalated discs contain gap junctions which are directly responsible for the spread of action potentials between cells",
+                    "Intercalated discs are dense regions where calcium accumulates after it is released from the sarcoplasmic reticulum",
+                    "The arrival of an action potential leads to the relaxation of the muscle cell",
+                    "The arrival of an action potential allows for the sequestration of calcium in the sarcoplasmic reticulum"
+                ],
+                correct: 1,
+                explanation: "Correct Answer: 2 (79.4% got this correct)"
+            },
+            {
+                id: 15,
+                question: "A 79 year old man attends the Emergency Department with 2 hours of chest pain and lightheadedness. His ECG is shown (see image). Which is the most likely explanation for the ECG findings?",
+                options: [
+                    "Aortic dissection",
+                    "Hyperkalaemia",
+                    "Myocardial infarction",
+                    "Pericarditis",
+                    "Pulmonary embolism"
+                ],
+                correct: 2,
+                explanation: "Correct Answer: 3 (69.7% got this correct)\n\nKey ECG Features\nST elevation in contiguous leads\nHyperacute T waves early\nV1-V4 → Anterior wall → LAD"
+            },
+            {
+                id: 16,
+                question: "A 46-year-old man attends with sudden onset central chest pain that worsens when lying flat and improves when sitting forward. Observations: Temp: 37.9°C (36.5-37.5), HR: 105 bpm (60-100), BP: 122/78 mmHg, RR: 18 bpm, SpO₂: 98%. Examination: Pericardial rub heard at left sternal edge. ECG shows widespread ST elevation with PR depression. What is the most likely diagnosis?",
+                options: [
+                    "Atrial myxoma",
+                    "Cardiac tamponade",
+                    "Myocardial infarction",
+                    "Pericarditis",
+                    "Pneumonia"
+                ],
+                correct: 3,
+                explanation: "Correct Answer: 4 (95.4% got this correct)\n\nPericarditis features:\nCentral chest pain\nPain worse when lying flat\nPain improves when sitting forward\nLow-grade fever\nPericardial rub\nECG: Widespread ST elevation with PR depression\n\nCardiac tamponade would show hypotension, raised JVP, muffled heart sounds (Beck's triad).\nMyocardial infarction ST elevation would be regional, not widespread. No PR depression."
+            },
+            {
+                id: 17,
+                question: "A 25 year old man presents to the Emergency Department after vomiting a large quantity of blood. At endoscopy, a deep ulcer is identified in the posterior wall at the junction of the first and second parts of the duodenum. There is a bleeding vessel in the base. From which artery is the bleeding most likely to be arising?",
+                options: [
+                    "Gastroduodenal artery",
+                    "Left gastric artery",
+                    "Short gastric artery",
+                    "Splenic artery",
+                    "Superior mesenteric artery"
+                ],
+                correct: 0,
+                explanation: "Correct Answer: 1 (90.8% got this correct)\n\nA posterior duodenal bulb ulcer (at the junction of the 1st and 2nd parts of the duodenum) classically erodes into the gastroduodenal artery (GDA), which runs posterior to the first part of the duodenum.\nPosterior ulcers → major haemorrhage (can cause massive haematemesis/melaena)\nThe GDA is a branch of the common hepatic artery (from the coeliac trunk)"
+            },
+            {
+                id: 18,
+                question: "The statement most likely to be true regarding ulcerative colitis is?",
+                options: [
+                    "Extends from the rectum in a confluent fashion",
+                    "Deep fissuring ulcers are common",
+                    "Skip lesions are common",
+                    "Strictering lesions are common",
+                    "Terminal ileum is most common site"
+                ],
+                correct: 0,
+                explanation: "Correct Answer: 1 (80.2% got this correct)\n\nUlcerative colitis (UC):\nAlways begins in the rectum\nExtends proximally in a continuous (confluent) pattern\nInvolves only the colon\nLimited to mucosa and submucosa\nRemaining options are common in CD."
+            },
+            {
+                id: 19,
+                question: "A 52 year old man has 3 months of fatigue. He has a history of ulcerative colitis and takes mesalazine. He drinks 20 units of alcohol per week. His temperature is 36.8°C and pulse rate 80 bpm. He has 3 cm hepatomegaly. Investigations: Albumin 36 g/L, ALT 65 IU/L, ALP 580 IU/L, Bilirubin 18 µmol/L, γGT 230 IU/L. Ultrasound scan of abdomen: bile duct wall thickening and dilatation. Which is the most appropriate next diagnostic investigation?",
+                options: [
+                    "CT scan of abdomen",
+                    "Endoscopic retrograde cholangiopancreatography",
+                    "Liver biopsy",
+                    "MR cholangiopancreatography",
+                    "Percutaneous transhepatic cholangiography"
+                ],
+                correct: 3,
+                explanation: "Correct Answer: 4 (48.9% got this correct)\n\nThis patient has:\nHistory of ulcerative colitis\nCholestatic LFT pattern (↑ ALP, ↑ GGT)\nUltrasound: bile duct wall thickening and dilatation\nThis strongly suggests Primary Sclerosing Cholangitis (PSC), which is classically associated with ulcerative colitis.\nMRCP first line diagnostic test, ERCP will be therapeutic.\n\nExam Tip\nUC + cholestatic LFTs → Think PSC → MRCP"
+            },
+            {
+                id: 20,
+                question: "A 38 year old man has 2 months of epigastric pain that radiates into his back. It is worse at night and sometimes wakes him up. It is better after eating. He has been very busy at work. He occasionally misses lunch, which worsens the pain. He has not lost weight. He smokes 10 cigarettes per day and drinks two bottles of wine per week. Examination is normal. Which is the most likely diagnosis?",
+                options: [
+                    "Cholecystitis",
+                    "Chronic pancreatitis",
+                    "Duodenal ulcer",
+                    "Gastric ulcer",
+                    "Gastric carcinoma"
+                ],
+                correct: 2,
+                explanation: "Correct Answer: 3 (77.9% got this correct)\n\nDuodenal Ulcer\nEpigastric pain\nWorse at night\nRelieved by food\nPain when fasting\n\nExam Tip\nPain better with food → Duodenal ulcer\nPain worse with food → Gastric ulcer"
+            },
+            {
+                id: 21,
+                question: "A 60 year old right hand dominant man presents to his GP complaining of right shoulder pain and progressively worsening arm weakness. His symptoms are aggravated when working above the shoulder level. On physical examination, there is no evidence of muscle atrophy. He has strong (5/5) adduction of his right shoulder but considerable weakness (1/5) with abduction when raising his arm above his head. Passive range of motion is intact. Which of the following is the most likely diagnosis?",
+                options: [
+                    "Adhesive capsulitis",
+                    "Glenohumeral subluxation",
+                    "Rotator cuff tear",
+                    "Subacromial bursitis",
+                    "Supraspinatus tendinitis"
+                ],
+                correct: 2,
+                explanation: "Correct Answer: 3 (36.6% got this correct)\n\nRotator Cuff Tear\nClinical Clues\nPain with overhead activity\nWeak active abduction\nNormal passive ROM\n\nAdhesive capsulitis: Both active and passive ROM restricted.\nSubacromial bursitis: Painful but not severe weakness.\nSupraspinatus tendinitis: Painful arc, but strength usually preserved."
+            },
+            {
+                id: 22,
+                question: "Which of the following fractures is associated with the greatest risk of avascular necrosis of the femoral head?",
+                options: [
+                    "Acetabular",
+                    "Femoral neck",
+                    "Intertrochanteric",
+                    "Pelvic rim",
+                    "Subtrochanteric"
+                ],
+                correct: 1,
+                explanation: "Correct Answer: 2 (91.6% got this correct)\n\nThe main blood supply to the adult femoral head comes from the retinacular branches of the medial circumflex femoral artery. These vessels run along the femoral neck within the joint capsule. An intracapsular femoral neck fracture can disrupt these vessels.\n\nBlood Supply to Femoral Head (Adult)\nMain: Medial circumflex femoral artery\nMinor: Artery of ligamentum teres\nThink about Intracapsular vs Extracapsular fractures."
+            },
+            {
+                id: 23,
+                question: "A 55 year-old secretary presents with ongoing pain and numbness in her hand. These symptoms are worse at night and she must shake her hand to regain feeling in it. Which of the following physical examination signs will be present?",
+                options: [
+                    "Hypothenar atrophy",
+                    "Inability to maintain wrist extension against resistance",
+                    "Small muscle atrophy in the hand",
+                    "Weakness of finger abduction",
+                    "Weakness of thumb abduction"
+                ],
+                correct: 4,
+                explanation: "Correct Answer: 5 (52.7% got this correct)\n\nClassic for carpal tunnel syndrome (CTS), caused by median nerve compression at the wrist.\n\nMedian nerve supplies:\nThenar muscles (including abductor pollicis brevis)\nSensation to lateral 3½ digits\nTherefore, CTS commonly causes:\nWeakness of thumb abduction\nThenar wasting (in advanced cases)\n\nHypothenar atrophy → Ulnar nerve\nWrist extension weakness → Radial nerve\nSmall muscle atrophy in hand → Ulnar nerve\nFinger abduction weakness → Ulnar nerve (interossei)"
+            },
+            {
+                id: 24,
+                question: "A 65 year old man presents with back pain two days after he was digging in the garden. The patient complains of pain in his low back that radiates into his buttocks, posterior thigh and calf, and the bottom of his foot. There is associated numbness of his lateral and plantar surface of his foot. Which of the following disc herniations is most likely to be responsible?",
+                options: [
+                    "L2-L3",
+                    "L3-L4",
+                    "L4-L5",
+                    "L5-S1",
+                    "S1-S2"
+                ],
+                correct: 3,
+                explanation: "Correct Answer: 4 (58.8% got this correct)\n\nNumbness on the lateral and plantar surface of the foot\nThis distribution corresponds to an S1 radiculopathy.\n\nVertebra = where nerve exits\nDisc herniation = compresses nerve below"
+            },
+            {
+                id: 25,
+                question: "Which one of the following is the most mobile joint in the hand?",
+                options: [
+                    "Fifth carpometacarpal joint",
+                    "First carpometacarpal joint",
+                    "First metacarpophalangeal joint",
+                    "Second carpometacarpal joint",
+                    "Second metacarpophalangeal joint"
+                ],
+                correct: 1,
+                explanation: "Correct Answer: 2 (65.6% got this correct)\n\nThe first carpometacarpal (CMC) joint (between the trapezium and 1st metacarpal) is the most mobile joint in the hand because it is a saddle joint with a wide range of motion, enabling thumb opposition.\n\nMovements at 1st CMC:\nFlexion / extension\nAbduction / adduction\nOpposition / reposition (unique, highly functional)\nCircumduction\nThis exceptional mobility is what allows the thumb to act as a \"mobile post\" for precision and power grip."
+            },
+            {
+                id: 26,
+                question: "A 55-year-old man attends his GP with acute onset of pain and swelling in his right big toe. He has a past medical history of hypertension. The joint is red, hot, and tender. Observations are normal. What is the most likely diagnosis?",
+                options: [
+                    "Gout",
+                    "Osteomyelitis",
+                    "Pseudogout",
+                    "Rheumatoid arthritis",
+                    "Septic arthritis"
+                ],
+                correct: 0,
+                explanation: "Correct Answer: 1 (93.9% got this correct)\n\nClassic Presentation\nSudden severe pain\nRed, hot, swollen joint\n1st MTP joint\n\nOsteomyelitis: More chronic, systemic features.\nPseudogout: Typically affects knee; calcium pyrophosphate crystals.\nRheumatoid arthritis: Symmetrical small joint polyarthritis.\nSeptic arthritis: Patient often systemically unwell (fever)."
+            },
+            {
+                id: 27,
+                question: "A 42-year-old painter and decorator reports 6 weeks of right shoulder pain, particularly when lifting objects over his head. He denies trauma or systemic symptoms. Pain disturbs his sleep if he lies on the affected side. On examination you find: Full passive range of motion, Painful arc between 60-120° of abduction, Weakness on resisted external rotation, No joint swelling or redness. Which of the following is the most likely diagnosis?",
+                options: [
+                    "Acromioclavicular joint arthritis",
+                    "Adhesive capsulitis",
+                    "Cervical radiculopathy",
+                    "Glenohumeral osteoarthritis",
+                    "Rotator cuff tendinopathy"
+                ],
+                correct: 4,
+                explanation: "Correct Answer: 5 (74% got this correct)\n\nShoulder pain worse with overhead activity\nNight pain (lying on affected side)\nPainful arc between 60-120° abduction\nFull passive range of motion\nWeakness on resisted external rotation\nNo swelling or redness\nThese are classic features of rotator cuff tendinopathy, most commonly involving the supraspinatus tendon.\n\nAdhesive capsulitis: Both active and passive ROM restricted.\nCervical radiculopathy: dermatomal pattern - Neck issues."
+            },
+            {
+                id: 28,
+                question: "An 82-year-old woman is brought to the emergency department with sudden-onset back pain after bending down to pick something up. She denies any history of trauma. She has known osteoporosis. Spinal X-ray report: Shows wedge compression fractures of T12 and L1 with loss of anterior vertebral height, no retropulsion, and preserved disc spaces. What is the most appropriate interpretation of this X-ray in context?",
+                options: [
+                    "Ankylosing spondylitis",
+                    "Osteoporotic compression fractures",
+                    "Pathological fracture due to malignancy",
+                    "Spondylolisthesis",
+                    "Vertebral haemangioma"
+                ],
+                correct: 1,
+                explanation: "Correct Answer: 2 (92.4% got this correct)\n\nAnkylosing spondylitis: Bamboo spine; younger patients.\nPathological fracture (malignancy): Vertebral body destruction, pedicle involvement, often abnormal disc spaces.\nSpondylolisthesis: Forward vertebral slippage."
+            },
+            {
+                id: 29,
+                question: "A 75 year old man has increasing low back pain, leg weakness and urinary incontinence. He has carcinoma of the prostate and bony metastases. Which is the most appropriate investigation to request urgently?",
+                options: [
+                    "99mTc bone scan",
+                    "Lumbar spine X-ray",
+                    "MR scan of spine",
+                    "Serum corrected calcium",
+                    "Serum prostate specific antigen"
+                ],
+                correct: 2,
+                explanation: "Correct Answer: 3 (82.4% got this correct)\n\nThis 75-year-old man has:\nKnown prostate cancer with bony metastases\nIncreasing low back pain\nLeg weakness\nUrinary incontinence\nThis is highly suggestive of malignant spinal cord compression (MSCC). MSCC is a medical emergency.\n\nMRI of the whole spine visualises:\nSpinal cord\nEpidural tumour compression\nLevel of compression\nSoft tissue involvement\nMust be performed urgently (within 24 hours).\n\n99mTc bone scan detects metastases but does not assess cord compression."
+            },
+            {
+                id: 30,
+                question: "A 35 year old woman has paleness and bluish discolouration of her fingers and toes with pain on exposure to cold. Recently, she has had some difficulty swallowing solid food. She has tight skin over her face and fingers. Which is the most likely diagnosis?",
+                options: [
+                    "Primary Raynaud's phenomenon",
+                    "Rheumatoid arthritis",
+                    "Sjögren's syndrome",
+                    "Systemic lupus erythematosus",
+                    "Systemic sclerosis"
+                ],
+                correct: 4,
+                explanation: "Correct Answer: 5 (67.9% got this correct)\n\nRaynaud's phenomenon (often first symptom),\nSkin thickening (sclerodactyly, tight face),\nGI dysmotility (dysphagia/GERD from oesophageal involvement),\nis classic for systemic sclerosis (scleroderma).\n\nPrimary Raynaud's: Raynaud's alone, no systemic features (no skin thickening/dysphagia).\nRheumatoid arthritis: inflammatory small joint pain/swelling; no skin tightening.\nSjögren's syndrome: dry eyes/mouth; parotid enlargement."
+            },
+            {
+                id: 31,
+                question: "A 34 year-old female construction worker presents with episodic blanching of her fingers when exposed to cold weather. The physical examination of her extremities and digits is normal at this time. Which of the following is the most likely diagnosis?",
+                options: [
+                    "Polymyalgia rheumatica",
+                    "Raynaud phenomenon",
+                    "Scleroderma",
+                    "Sjogren syndrome",
+                    "Systemic lupus erythematosus"
+                ],
+                correct: 1,
+                explanation: "Correct Answer: 2 (93.9% got this correct)\n\nRaynaud phenomenon is characterised by episodic vasospasm of the digital arteries in response to cold or stress, causing colour changes (white, blue, red)."
+            },
+            {
+                id: 32,
+                question: "A 41 year old male with a history of intravenous drug abuse presents to his GP with acute, nontraumatic right knee pain, chills, and sweats starting 2 days ago. On physical examination, his temperature is 39 degrees C. The right knee is erythematous, oedematous and tender to palpation and range of motion. Plain knee X-ray reveals soft tissue swelling. Which of the following is the most likely diagnosis?",
+                options: [
+                    "Gouty arthritis",
+                    "HIV-related arthralgia",
+                    "Rheumatoid arthritis",
+                    "Septic arthritis",
+                    "Tuberculous arthritis"
+                ],
+                correct: 3,
+                explanation: "Correct Answer: 4 (90.1% got this correct)\n\nIV drug use → major risk factor (bacteraemia, Staphylococcus aureus common)\nAcute monoarthritis (knee)\nSystemic features: fever (39°C), chills, sweats\nHot, swollen, tender joint\nPainful restricted range of motion\nX-ray: soft tissue swelling (early finding; joint space changes occur later)\n\nGout: 1st MTP.\nRheumatoid arthritis: usually chronic, symmetrical small joints."
+            },
+            {
+                id: 33,
+                question: "Antinuclear Antigen (ANA) is most commonly associated with and monitors progress of which of the following disorders?",
+                options: [
+                    "Ankylosing spondylitis",
+                    "Osteoarthritis",
+                    "Polymyalgia rheumatic (PMR)",
+                    "Rheumatoid arthritis (RA)",
+                    "Systemic Lupus Erythematosis (SLE)"
+                ],
+                correct: 4,
+                explanation: "Correct Answer: 5 (90.8% got this correct)\n\nANA is positive in >95% of patients with SLE\nIn SLE, disease monitoring is more specifically done with:\nAnti-dsDNA titres\nComplement levels (C3, C4)"
+            },
+            {
+                id: 34,
+                question: "A 43 year old woman presents with a two-year history of frequent episodes of pain and morning stiffness in both hands and wrists. She experiences some symptomatic relief with ibuprofen but feels that the episodes are becoming more frequent and severe. On examination, you observe joint swelling of several MCP joints on both hands. X-ray of the hands shows joint space narrowing of the MCP joints. In addition to NSAIDs, what is the most appropriate first-line long-term medication to treat this patient?",
+                options: [
+                    "Infliximab",
+                    "Methotrexate",
+                    "Paracetamol",
+                    "Prednisolone",
+                    "Sulfasalazine"
+                ],
+                correct: 1,
+                explanation: "Correct Answer: 2 (92.4% got this correct)\n\nThis 43-year-old woman has classic features of rheumatoid arthritis (RA):\nChronic inflammatory joint pain (2 years)\nMorning stiffness\nSymmetrical MCP joint swelling\n\nMethotrexate: First-line long-term DMARD (disease modifying treatment) for RA\nParacetamol: Symptomatic only.\nPrednisolone: Used short-term for flares, not long-term monotherapy."
+            },
+            {
+                id: 35,
+                question: "A 23 year old female presents with ongoing arthralgias with intermittent flares of arthritis. She is found to have a malar rash and an abnormal urinalysis. Serum ANA and anti-double-stranded DNA antibodies are present. Which of the following tests should be ordered to assess her risk for thrombotic events and future risk of spontaneous abortion?",
+                options: [
+                    "Anti-nuclear cytoplasmic antibodies (ANCA)",
+                    "Anti-phospholipid antibodies",
+                    "Bleeding time",
+                    "Full blood count",
+                    "PT/INR"
+                ],
+                correct: 1,
+                explanation: "Correct Answer: 2 (52.7% got this correct)\n\nPatients with SLE are at increased risk of antiphospholipid syndrome (APS), which is associated with:\nArterial and venous thrombosis\nRecurrent miscarriage\nPregnancy complications\n\nTo assess her risk of thrombosis and spontaneous abortion, she should be tested for:\nAnti-cardiolipin antibodies\nLupus anticoagulant\nAnti-beta-2 glycoprotein I antibodies\nThese are collectively referred to as anti-phospholipid antibodies."
+            },
+            {
+                id: 36,
+                question: "A 35 year old woman presents with a long standing complaint of dry, scratchy eyes and dry mouth. She also reports dyspareunia (pain with intercourse). Investigations demonstrate a positive anti-nuclear antibody (ANA) and Anti-La antibodies. Which of the following classes of medicines should be avoided in treating this condition?",
+                options: [
+                    "Anticholinergics",
+                    "Antimalarials",
+                    "Glucocorticoids",
+                    "Methotrexate",
+                    "NSAIDs"
+                ],
+                correct: 0,
+                explanation: "Correct Answer: 1 (64.9% got this correct)\n\nAnticholinergics produce dryness, which would exacerbate the sicca symptoms (dry eyes, dry mouth) of Sjögren's syndrome."
+            },
+            {
+                id: 37,
+                question: "The most important preventive medicine recommendation for patients with osteoarthritis is which of the following?",
+                options: [
+                    "Brace the affected joint",
+                    "Change to an anti-inflammatory diet",
+                    "Inject steroids monthly",
+                    "Rest the joint",
+                    "Start an exercise program"
+                ],
+                correct: 4,
+                explanation: "Correct Answer: 5 (77.1% got this correct)\n\nExercise programs (including strengthening, aerobic, and range-of-motion exercises) are the cornerstone of osteoarthritis management, helping maintain joint function, reduce pain, and improve quality of life."
+            },
+            {
+                id: 38,
+                question: "A 27 year-old male presents with gradually worsening low back pain and stiffness for the past two years. His symptoms are worse upon awakening and gradually improve throughout the day. Lumbosacral flexion is less than 50%. Lumbosacral spine films show erosions in the joint line of both sacroiliac joints. HLA-B27 test is positive. Which of the following is the most appropriate first-line medication for this patient?",
+                options: [
+                    "Infliximab",
+                    "Methotrexate",
+                    "NSAID",
+                    "Prednisone",
+                    "Sulfasalazine"
+                ],
+                correct: 2,
+                explanation: "Correct Answer: 3 (77.1% got this correct)\n\nKey Features of ankylosing spondylosis\nInflammatory back pain (better with exercise)\nMorning stiffness\nReduced lumbar flexion\nSacroiliitis on imaging\nHLA-B27 association\n\nFirst-Line Medication: NSAIDs"
+            },
+            {
+                id: 39,
+                question: "Which substance synthesised and released from the thyroid gland, has the greatest biological activity?",
+                options: [
+                    "Thyroglobulin",
+                    "Thyroid stimulating hormone (TSH)",
+                    "Thyrotropin releasing hormone (TRH)",
+                    "Thyroxine (T4)",
+                    "Triiodothyronine (T3)"
+                ],
+                correct: 4,
+                explanation: "Correct Answer: 5 (84% got this correct)\n\nTriiodothyronine (T3) is the most biologically active thyroid hormone, being approximately 3-5 times more potent than thyroxine (T4)."
+            },
+            {
+                id: 40,
+                question: "A 27 year old woman has a long history of irregular menstruation. She does not take any medication. Her BMI is 29.4 kg/m². Investigations: LH (pre-menopausal female) 15 U/L (follicular) (1-11), FSH 6 U/L (follicular) (2-8), Testosterone 3.5 nmol/L (0.2-2.9), Cortisol post 1 mg dexamethasone 40 nmol/L (<50), Prolactin 425 U/L (100-500). Which is the most likely diagnosis?",
+                options: [
+                    "Androgen secreting tumour",
+                    "Cushing's syndrome",
+                    "Polycystic ovary syndrome",
+                    "Premature ovarian failure",
+                    "Prolactinoma"
+                ],
+                correct: 2,
+                explanation: "Correct Answer: 3 (73.3% got this correct)\n\nThis 27-year-old woman has:\nLong history of irregular menstruation (oligo-/anovulation)\nBMI 29.4 (overweight)\nElevated LH (15 U/L) with normal FSH → ↑ LH:FSH ratio\nElevated testosterone\nNormal dexamethasone suppression (rules out Cushing's)\nNormal prolactin (rules out prolactinoma)"
+            },
+            {
+                id: 41,
+                question: "A 28-year-old lady presents to her GP with palpitations, menstrual irregularities and heat intolerance. On examination she has a visible neck mass which is smooth with no discrete nodules. She has mild bilateral proptosis. Her GP organises a thyroid function blood test, which show the following: T4 52 (normal 12-22), TSH <0.02 (normal 0.2-4.2), T3 18 (normal 3-7.8). Which is the most appropriate investigation to confirm the cause of her thyrotoxicosis?",
+                options: [
+                    "NM thyroid scan",
+                    "Thyroglobulin",
+                    "TPO antibodies",
+                    "TSH receptor antibodies",
+                    "US thyroid"
+                ],
+                correct: 3,
+                explanation: "Correct Answer: 4 (70.2% got this correct)\n\nPalpitations, heat intolerance → hyperthyroid symptoms\nDiffuse smooth goitre\nMild bilateral proptosis\nSuppressed TSH\nElevated T4 and T3\nThis clinical picture is classic for Graves' disease.\n\nGraves' disease is caused by:\nAutoantibodies against the TSH receptor (TRAb)\nThese antibodies:\nStimulate the TSH receptor\nIncrease thyroid hormone production\nCause diffuse gland enlargement\nCause ophthalmopathy (via orbital fibroblast activation)\n\nTherefore, the most appropriate test to confirm the cause is: TSH receptor antibodies"
+            },
+            {
+                id: 42,
+                question: "A 53-year-old man is admitted to hospital with sepsis. He is commenced on IV antibiotics for a severe pneumonia but requires ventilation support and is admitted to the intensive care unit for mechanical invasive ventilation. He is noted to have persistent sinus tachycardia and the medical team organise a thyroid function blood test: T4 8 (normal 12-22), TSH 0.1 (normal 0.2-4.2), T3 4 (normal 3-7.8). Which is the most likely diagnosis?",
+                options: [
+                    "Grave's disease",
+                    "Hashimoto's thyroiditis",
+                    "Multinodular goitre",
+                    "Thyroid carcinoma",
+                    "Sick euthyroid syndrome"
+                ],
+                correct: 4,
+                explanation: "Correct Answer: 5 (61.8% got this correct)\n\nCritically ill patient + low T3 ± low T4 + normal TSH → Think Sick Euthyroid Syndrome\n\nGraves' disease: High T3/T4, Suppressed TSH\nHashimoto's thyroiditis: High TSH, low T4 (primary hypothyroidism)"
+            },
+            {
+                id: 43,
+                question: "A 70-year-old woman presents with a three-month history of swelling in the neck, and hoarseness of voice. Her GP examines her neck and finds a hard mass in the left side of her thyroid gland with irregular surface and edges with cervical lymphadenopathy. Blood tests are requested and show: T4 20 (normal 12-22), TSH 1.8 (normal 0.2-4.2). Which is the most likely diagnosis?",
+                options: [
+                    "Anaplastic thyroid cancer",
+                    "Hashimoto's thyroiditis",
+                    "Medullary thyroid cancer",
+                    "Papillary thyroid cancer",
+                    "Thyroglossal cyst"
+                ],
+                correct: 0,
+                explanation: "Correct Answer: 1 (31.3% got this correct)\n\nRapidly enlarging neck mass (3 months)\nHoarseness of voice → recurrent laryngeal nerve involvement\nHard, irregular thyroid mass\nCervical lymphadenopathy\nNormal thyroid function tests (T4 and TSH normal)\n\nKey Red Flags:\nElderly patient\nRapid growth\nHard irregular mass\nLocal invasion symptoms (hoarseness)\nNodal involvement\nThis constellation is classic for Anaplastic thyroid carcinoma\n\nPapillary cancer has a longer duration and is seen in young people.\nMedullary associated with high calcitonin levels."
+            },
+            {
+                id: 44,
+                question: "A 62-year-old smoker presents to their GP with weight loss and breathlessness. Routine blood tests reveal: Corrected calcium: 3.2 mmol/L Normal: 2.20-2.60 mmol/L, Phosphate: 0.6 mmol/L Normal: 0.8-1.5 mmol/L, ALP: 342 U/L Normal: 30-130 U/L, Albumin: 30 g/L Normal: 35-50 g/L, ALT: 65 U/L Normal: <40 U/L, PTH: 0.1 pmol/L Normal: 1.6-6.9 pmol/L. A chest XR reveals a solitary opacity in the Right Upper Zone. Which is the most likely diagnosis?",
+                options: [
+                    "Mesothelioma",
+                    "Metastatic lung cancer",
+                    "Neuroendocrine lung tumour",
+                    "Solitary lung nodule",
+                    "Tuberculosis"
+                ],
+                correct: 1,
+                explanation: "Correct Answer: 2 (50.4% got this correct)\n\nHypercalcaemia with suppressed PTH in a smoker with a lung opacity suggests malignancy-associated hypercalcaemia, most likely due to metastatic lung cancer producing PTHrP."
+            },
+            {
+                id: 45,
+                question: "A 53-year-old lady presents to her GP with all over body aches and pains. She denies polyuria, polydipsia or bowel habit change. Examination is normal. Her routine blood tests reveal: Corrected calcium: 2.03 mmol/L Normal: 2.20-2.60 mmol/L, Phosphate: 0.2 mmol/L Normal: 0.8-1.5 mmol/L, ALP: 500 U/L Normal: 30-130 U/L, ALT: 11 U/L Normal: <40 U/L, Albumin (Alb): 40 g/L Normal: 35-50 g/L, PTH: 20 pmol/L Normal: 1.6-6.9 pmol/L. Which is the most likely diagnosis?",
+                options: [
+                    "Multiple myeloma",
+                    "Osteomalacia",
+                    "Paget's bone disease",
+                    "Primary hyperparathyroidism",
+                    "Sarcoidosis"
+                ],
+                correct: 1,
+                explanation: "Correct Answer: 2 (51.1% got this correct)\n\nLow calcium + High PTH → This is secondary hyperparathyroidism\nPTH is elevated appropriately in response to hypocalcaemia.\nLow calcium, Low phosphate\nHigh ALP, High PTH\nCould be Vitamin D deficiency → Osteomalacia\n\nMultiple myeloma: Usually hypercalcaemia\nPrimary hyperparathyroidism: High calcium, Low phosphate, High PTH"
+            },
+            {
+                id: 46,
+                question: "A 48-year-old man attends their GP for review after routine blood tests. He has no symptoms. His HbA1c is 49 mmol/mol (Normal 41 or below) on two separate occasions. Which is the most likely diagnosis?",
+                options: [
+                    "Impaired fasting glucose",
+                    "Impaired glucose tolerance",
+                    "Latent autoimmune diabetes of adulthood",
+                    "Type 1 diabetes mellitus",
+                    "Type 2 diabetes mellitus"
+                ],
+                correct: 4,
+                explanation: "Correct Answer: 5 (87.8% got this correct)\n\nAn HbA1c of 48 mmol/mol or above on two separate occasions is diagnostic for diabetes mellitus. In an asymptomatic 48-year-old without features of type 1 diabetes, type 2 diabetes is the most likely diagnosis."
+            },
+            {
+                id: 47,
+                question: "A 56-year-old woman with newly diagnosed type 2 diabetes (HbA1c 58 mmol/mol) has a BMI of 33 kg/m². She has no cardiovascular disease. What is the most appropriate initial pharmacological treatment?",
+                options: [
+                    "Insulin glargine",
+                    "Gliclazide",
+                    "Metformin",
+                    "Pioglitazone",
+                    "Sitagliptin"
+                ],
+                correct: 2,
+                explanation: "Correct Answer: 3 (98.5% got this correct)\n\nMetformin is first-line pharmacological treatment for type 2 diabetes, particularly in patients who are overweight (BMI >25 kg/m²)."
+            },
+            {
+                id: 48,
+                question: "A 72-year-old man with type 2 diabetes on gliclazide reports shaking, sweating and confusion that resolve after drinking sugary tea. Which physiological mechanism best explains his symptoms?",
+                options: [
+                    "Autoimmune destruction of β-cells",
+                    "Drug-induced increased insulin secretion",
+                    "Excessive peripheral insulin resistance",
+                    "Excess renal glucose loss",
+                    "Failure of hepatic gluconeogenesis"
+                ],
+                correct: 1,
+                explanation: "Correct Answer: 2 (70.2% got this correct)\n\nGliclazide causes insulin secretion from pancreas, irrespective of the blood glucose level, which can lead to hypoglycaemia."
+            },
+            {
+                id: 49,
+                question: "A 64-year-old man with long-standing type 2 diabetes attends his annual review. On examination he has reduced vibration sense in both feet but intact pulses. Which complication does this finding most strongly indicate?",
+                options: [
+                    "Cellulitis",
+                    "Charcot arthropathy",
+                    "Osteomyelitis",
+                    "Peripheral arterial disease",
+                    "Peripheral neuropathy"
+                ],
+                correct: 4,
+                explanation: "Correct Answer: 5 (91.6% got this correct)\n\nReduced vibration sense with intact pulses is classic for peripheral neuropathy, a common complication of long-standing diabetes."
+            },
+            {
+                id: 50,
+                question: "A 23-year-old woman with type 1 diabetes presents with vomiting, abdominal pain and increasing drowsiness. She has missed several insulin doses. On examination she is tachycardic and tachypnoeic with Kussmaul respirations. Arterial blood gas on room air shows: pH: 7.20 (Normal 7.35-7.45), PaCO₂: 2.8 kPa (Normal 4.7-6.0 kPa), HCO₃⁻: 10 mmol/L (Normal 22-28 mmol/L), Anion gap: 26 mmol/L (Normal 8-16 mmol/L), Ketones: 6.0 mmol/L (Normal <0.6 mmol/L), Glucose: 22 mmol/L. Which mechanism best explains the metabolic acidosis seen in this patient?",
+                options: [
+                    "Accumulation of β-hydroxybutyrate and acetoacetate",
+                    "Impaired gastrointestinal bicarbonate absorption",
+                    "Increased chloride retention causing a normal anion gap acidosis",
+                    "Lactate accumulation due to tissue hypoperfusion",
+                    "Reduced renal acid secretion from acute kidney injury"
+                ],
+                correct: 0,
+                explanation: "Correct Answer: 1 (65.6% got this correct)\n\nIn diabetic ketoacidosis (DKA), insulin deficiency leads to increased lipolysis and fatty acid metabolism, producing ketone bodies (β-hydroxybutyrate and acetoacetate) causing a high anion gap metabolic acidosis."
+            },
+            {
+                id: 51,
+                question: "A 77 year old woman is found by her carer on the floor 14 hours after a fall. Her pulse rate is 110 bpm and BP 90/45 mmHg. Her right leg is shortened and externally rotated. Investigations: Creatine kinase 27 000 U/L (25-175), Potassium 5.9 mmol/L (3.5-5.3), Urea 8.8 mmol/L (2.5-7.8), Creatinine 216 µmol/L (60-120). Which is the most appropriate initial management?",
+                options: [
+                    "Calcium polystyrene sulfonate",
+                    "Dialysis",
+                    "Furosemide",
+                    "Intravenous fluid",
+                    "Urinary alkalinisation"
+                ],
+                correct: 3,
+                explanation: "Correct Answer: 4 (79.4% got this correct)\n\nMost Important Initial Step\nPrevent further kidney damage\nThe cornerstone of early management of rhabdomyolysis is:\nAggressive intravenous fluid resuscitation\n\nIV fluids:\nRestore renal perfusion\nDilute myoglobin\nPromote renal clearance\nReduce risk of acute tubular necrosis"
+            },
+            {
+                id: 52,
+                question: "A 55 year old has blood in his urine. He smokes 30 cigarettes a day. He has a palpable abdominal mass. Histology shows that there is a malignancy of the urothelial cells that line the bladder. Which is the most appropriate diagnosis?",
+                options: [
+                    "Adenocarcinoma",
+                    "Angiosarcoma",
+                    "Leiomyosarcoma",
+                    "Malignant mesothelioma",
+                    "Transitional cell carcinoma"
+                ],
+                correct: 4,
+                explanation: "Correct Answer: 5 (93.1% got this correct)\n\nTransitional cell carcinoma (TCC), also known as urothelial carcinoma, is the most common type of bladder cancer, arising from the urothelial cells lining the bladder."
+            },
+            {
+                id: 53,
+                question: "A 32 year old woman has 4 hours of severe cramping left loin pain, associated with vomiting. She has no urinary or bowel symptoms. Her last menstrual period was 3 weeks ago. Her temperature is 37.1°C. She has left loin tenderness on palpation. Investigations: Haemoglobin: 131 g/L, White cell count: 7.2 × 10⁹/L, Platelets: 311 × 10⁹/L, Urinalysis: blood 4+, nitrites negative, leucocytes 1+. Which is most likely diagnosis?",
+                options: [
+                    "Ectopic pregnancy",
+                    "Pelvic inflammatory disease",
+                    "Pyelonephritis",
+                    "Ureteric calculus",
+                    "Urinary tract infection"
+                ],
+                correct: 3,
+                explanation: "Correct Answer: 4 (73.3% got this correct)\n\nKey Diagnostic Clues\nSudden severe colicky loin pain\nMicroscopic/macroscopic haematuria\nVomiting (visceral pain response)\nNo significant infection markers\nThis is classic for: Renal colic due to ureteric stone"
+            },
+            {
+                id: 54,
+                question: "A 21 year old man presents to the Emergency Department with severe left groin pain that started 1 hour ago. The pain is 10/10 and associated with nausea. He denies any trauma or urinary symptoms. His temperature is 36.1°C. His left testicle is swollen and very tender. Which is the most appropriate next step in management?",
+                options: [
+                    "Emergency surgical exploration",
+                    "Intravenous antibiotics",
+                    "MR imaging of pelvis",
+                    "Testicular ultrasonography",
+                    "Urine for chlamydia antigen test"
+                ],
+                correct: 0,
+                explanation: "Correct Answer: 1 (81.7% got this correct)\n\nSudden severe testicular pain with swelling in a young man is testicular torsion until proven otherwise. Emergency surgical exploration is required to salvage the testicle."
+            },
+            {
+                id: 55,
+                question: "A 37 year old woman has 2 days of dysuria and increased urinary frequency. A midstream urine sample shows >105 Escherichia coli bacteria; these are sensitive to trimethoprim. Which is the primary mechanism of action of trimethoprim?",
+                options: [
+                    "Accelerates bacterial protein degradation",
+                    "Blocks bacterial mRNA translation",
+                    "Inhibits bacterial DNA replication",
+                    "Reduces peptidoglycan synthesis",
+                    "Tetrahydrofolate inhibition"
+                ],
+                correct: 4,
+                explanation: "Correct Answer: 5 (53.4% got this correct)\n\nTrimethoprim inhibits bacterial dihydrofolate reductase, preventing the synthesis of tetrahydrofolate, which is essential for bacterial DNA synthesis."
+            },
+            {
+                id: 56,
+                question: "A 67 year old man is due to have a CT scan of chest, abdomen and pelvis with intravenous contrast as assessment for possible lymphoma. He had a renal transplant 5 years ago. His medication includes prednisolone, tacrolimus and lisinopril. His BP is 131/86 mmHg. Investigations: Urea 12.9 mmol/L (2.5-7.8), Creatinine 165 µmol/L (60-120), eGFR 39 mL/min/1.73 m² (>60). Which is the most appropriate treatment to give before the scan?",
+                options: [
+                    "Intravenous 0.9% sodium chloride infusion",
+                    "Intravenous acetylsalicylic acid",
+                    "Intravenous furosemide infusion",
+                    "Intravenous hydrocortisone",
+                    "Intravenous mannitol"
+                ],
+                correct: 0,
+                explanation: "Correct Answer: 1 (62.6% got this correct)\n\nIntravenous 0.9% sodium chloride infusion (normal saline) is the standard prophylaxis to reduce the risk of contrast-induced nephropathy in patients with chronic kidney disease."
+            },
+            {
+                id: 57,
+                question: "A 20 year old man has 2 days of visible haematuria. Three days before the haematuria started, he developed tonsillitis and was treated with phenoxymethylpenicillin. He has no significant medical history. His BP is 112/54 mmHg. Investigations: Urea 3.2 mmol/L, Creatinine 61 µmol/L. Urinalysis: glucose negative, ketones negative, blood 3+, protein 3+, nitrites negative, leucocytes negative. Which is the most likely cause of his haematuria?",
+                options: [
+                    "Alport's nephropathy",
+                    "Drug reaction",
+                    "Granulomatosis with polyangiitis",
+                    "IgA nephropathy",
+                    "Postinfectious glomerulonephritis"
+                ],
+                correct: 3,
+                explanation: "Correct Answer: 4 (58.8% got this correct)\n\nHaematuria occurring:\nWithin days of an upper respiratory infection\nThis is classic for: IgA nephropathy (Berger's disease)\n\nPathophysiology\nUpper respiratory infection → Increased IgA production → IgA immune complex deposition in mesangium → Glomerular inflammation → Haematuria\n\nWhy NOT Post-infectious GN?\nOccurs 1-3 weeks after infection, not within a few days"
+            },
+            {
+                id: 58,
+                question: "A 65 year old man has 3 weeks of progressive ankle oedema. His BP is 125/85 mmHg and oxygen saturation 98% breathing air. He has marked bilateral pitting ankle oedema and reduced chest expansion. Investigations: Creatinine 85 μmol/L, Urinary protein: creatinine ratio 300 mg/mmol (<30), Fasting glucose 5.7 mmol/L, Albumin 22 g/L (35-50), Total cholesterol 9 mmol/L (<5.0). Which treatment is most likely to reduce the amount of urinary protein?",
+                options: [
+                    "Furosemide",
+                    "Low-protein diet (0.8 g/kg/day)",
+                    "Metoprolol tartrate",
+                    "Oral fluid restriction (<1 L/day)",
+                    "Ramipril"
+                ],
+                correct: 4,
+                explanation: "Correct Answer: 5 (51.9% got this correct)\n\nClassic for: Nephrotic syndrome\n\nWhy Ramipril?\nRamipril is an ACE inhibitor, which:\nReduces intraglomerular pressure\nDilates efferent arteriole\nReduces glomerular filtration pressure\nDecreases protein leakage\nReduces proteinuria\nACE inhibitors are first-line therapy to reduce urinary protein loss in nephrotic syndrome."
+            },
+            {
+                id: 59,
+                question: "An 81 year old man has his serum prostate specific antigen checked. He is fully fit with no urinary symptoms. His WHO performance status is 1. Investigations: Prostate specific antigen 8.5 µg/L (<4), Prostate biopsy adenocarcinoma of prostate, Gleason score 3 + 3, MR scan of pelvis no disease out with the prostate, Isotope bone scan normal, TNM stage T2 N0 M0. Which is the most appropriate next step in management?",
+                options: [
+                    "Active surveillance",
+                    "Antiandrogen therapy",
+                    "Brachytherapy",
+                    "External beam radiotherapy",
+                    "Radical prostatectomy"
+                ],
+                correct: 0,
+                explanation: "Correct Answer: 1 (51.1% got this correct)\n\nLow-risk prostate cancer (T1-T2a, Gleason ≤6, PSA <10) with no symptoms and good performance status is appropriate for active surveillance."
             }
         ];
 
-        // Store questions in localStorage for search feature
         localStorage.setItem('mock2026_questions', JSON.stringify(questions.map(q => ({
             id: q.id,
             question: q.question,
@@ -508,18 +1241,10 @@
             explanation: q.explanation
         }))));
 
-        // --- Modal Functions ---
-        function showConfirmationModal(title, message, onConfirm) {
+        function showConfirmationModal(onConfirm) {
             const modal = document.getElementById('confirmationModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalMessage = document.getElementById('modalMessage');
             const confirmBtn = document.getElementById('modalConfirmBtn');
             const cancelBtn = document.getElementById('modalCancelBtn');
-            
-            if (modalTitle && modalMessage) {
-                modalTitle.textContent = title;
-                modalMessage.textContent = message;
-            }
             
             const newConfirmBtn = confirmBtn.cloneNode(true);
             const newCancelBtn = cancelBtn.cloneNode(true);
@@ -556,7 +1281,6 @@
             modal.style.display = 'flex';
         }
 
-        // --- PROGRESS TRACKING ---
         function getStoredProgress() {
             const progress = localStorage.getItem(`quiz_progress_${QUIZ_NAME}`);
             if (progress) {
@@ -591,48 +1315,37 @@
             return progress;
         }
         
-        // --- RESET FUNCTIONS ---
         function resetQuizOnly() {
-            showConfirmationModal(
-                '⟡ RESET CURRENT QUIZ ⟡',
-                'This will clear ALL your answers for this quiz. Your best score and attempt history will NOT be affected. Are you sure?',
-                () => {
-                    userAnswers = new Array(questions.length).fill(null);
-                    currentQuestionIndex = 0;
-                    const progress = getStoredProgress();
-                    progress.answers = userAnswers;
-                    saveProgress(progress);
-                    loadQuestion();
-                    showSuccessModal('Your answers have been cleared! You can now retake the quiz.', null);
-                }
-            );
+            showConfirmationModal(() => {
+                userAnswers = new Array(questions.length).fill(null);
+                currentQuestionIndex = 0;
+                const progress = getStoredProgress();
+                progress.answers = userAnswers;
+                saveProgress(progress);
+                loadQuestion();
+                showSuccessModal('Your answers have been cleared. You can now retake the quiz.', null);
+            });
         }
         
         function clearAllProgress() {
-            showConfirmationModal(
-                '⟡ DELETE ALL PROGRESS ⟡',
-                'This will permanently delete ALL your progress including: All saved answers, Best scores, Attempt history. This cannot be undone. Are you absolutely sure?',
-                () => {
-                    localStorage.removeItem(`quiz_progress_${QUIZ_NAME}`);
-                    userAnswers = new Array(questions.length).fill(null);
-                    currentQuestionIndex = 0;
-                    const progress = getStoredProgress();
-                    progress.answers = userAnswers;
-                    saveProgress(progress);
-                    loadQuestion();
-                    showSuccessModal('All your progress has been cleared! The quiz has been reset.', null);
-                }
-            );
+            showConfirmationModal(() => {
+                localStorage.removeItem(`quiz_progress_${QUIZ_NAME}`);
+                userAnswers = new Array(questions.length).fill(null);
+                currentQuestionIndex = 0;
+                const progress = getStoredProgress();
+                progress.answers = userAnswers;
+                saveProgress(progress);
+                loadQuestion();
+                showSuccessModal('All progress has been cleared. The quiz has been reset.', null);
+            });
         }
 
-        // --- QUIZ STATE ---
         let currentQuestionIndex = 0;
         let userAnswers = getStoredProgress().answers || new Array(questions.length).fill(null);
         let answerSelected = false;
 
         const quizContainer = document.getElementById('quizContainer');
 
-        // Check if we need to jump to a specific question (from search)
         const jumpToQuestion = localStorage.getItem('mock2026_jumpToQuestion');
         if (jumpToQuestion !== null) {
             currentQuestionIndex = parseInt(jumpToQuestion);
@@ -660,7 +1373,7 @@
             }
 
             const explanationHtml = isAnswered 
-                ? `<div class="explanation-box">📘 <strong>Explanation:</strong> ${q.explanation}</div>` 
+                ? `<div class="explanation-box">EXPLANATION:\n\n${q.explanation}</div>` 
                 : '';
 
             const progress = getStoredProgress();
@@ -668,9 +1381,9 @@
             quizContainer.innerHTML = `
                 <div class="header">
                     <span class="question-number">Question ${currentQuestionIndex + 1} of ${questions.length}</span>
-                    <span class="progress-stats">🏆 Best: ${progress.bestScore}%</span>
-                    <span class="search-nav" onclick="goToHomepage()">🔍 Search Questions</span>
-                    <button class="reset-quiz-btn" onclick="resetQuizOnly()">⟳ Reset Answers</button>
+                    <span class="progress-stats">BEST: ${progress.bestScore}%</span>
+                    <span class="search-nav" onclick="goToHomepage()">SEARCH QUESTIONS</span>
+                    <button class="reset-quiz-btn" onclick="resetQuizOnly()">RESET ANSWERS</button>
                 </div>
                 <div class="question-text">${q.question}</div>
                 <div class="options" id="optionsContainer">
@@ -678,12 +1391,12 @@
                 </div>
                 ${explanationHtml}
                 <div class="navigation-buttons">
-                    <button class="prev-btn" onclick="prevQuestion()" ${currentQuestionIndex === 0 ? 'disabled' : ''}>← Previous</button>
+                    <button class="prev-btn" onclick="prevQuestion()" ${currentQuestionIndex === 0 ? 'disabled' : ''}>PREVIOUS</button>
                     <div class="question-jumper">
                         <input type="number" id="questionJump" min="1" max="${questions.length}" value="${currentQuestionIndex + 1}">
-                        <button class="jump-btn" onclick="jumpToQuestion()">Go</button>
+                        <button class="jump-btn" onclick="jumpToQuestion()">GO</button>
                     </div>
-                    <button class="next-btn" onclick="nextQuestion()">${currentQuestionIndex === questions.length - 1 ? 'Finish →' : 'Next →'}</button>
+                    <button class="next-btn" onclick="nextQuestion()">${currentQuestionIndex === questions.length - 1 ? 'FINISH' : 'NEXT'}</button>
                 </div>
             `;
             answerSelected = isAnswered;
@@ -756,7 +1469,7 @@
             let detailedResults = '';
             for (let i = 0; i < questions.length; i++) {
                 const isCorrect = userAnswers[i] === questions[i].correct;
-                const statusEmoji = isCorrect ? '✅' : '❌';
+                const statusEmoji = isCorrect ? '✓' : '✗';
                 detailedResults += `
                     <div style="padding: 10px; margin: 5px 0; background: ${isCorrect ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)'}; border-radius: 8px; border-left: 3px solid ${isCorrect ? '#22c55e' : '#ef4444'};">
                         <strong>${statusEmoji} Question ${i + 1}:</strong> ${questions[i].question.substring(0, 100)}...
@@ -767,29 +1480,29 @@
             
             quizContainer.innerHTML = `
                 <div class="score-box">
-                    <h2>🎉 Mock Block Complete!</h2>
+                    <h2>MOCK BLOCK COMPLETE</h2>
                     <p style="font-size: 1.2rem; margin: 20px 0; color: rgba(255, 255, 255, 0.8);">You scored <strong style="color: #00aaff;">${correctCount}</strong> out of <strong style="color: #00aaff;">${questions.length}</strong></p>
                     <div style="background: rgba(255, 255, 255, 0.1); height: 25px; width: 100%; border-radius: 30px; margin: 20px 0; overflow: hidden;">
                         <div style="background: #00aaff; width: ${percentage}%; height: 100%; box-shadow: 0 0 10px #00aaff;"></div>
                     </div>
                     <p style="font-size: 1.5rem; font-weight: bold; color: #00aaff;">${percentage}%</p>
                     <div class="personal-best">
-                        <strong>📊 Your Progress</strong><br>
-                        🏆 Best Score: ${progress.bestScore}%<br>
-                        📝 This Score: ${percentage}%<br>
-                        🔄 Attempts: ${progress.attempts}<br>
-                        ${percentage > progress.bestScore && progress.attempts > 1 ? '<br>🎉 NEW PERSONAL BEST! 🎉' : ''}
+                        <strong>YOUR PROGRESS</strong><br>
+                        BEST SCORE: ${progress.bestScore}%<br>
+                        THIS SCORE: ${percentage}%<br>
+                        ATTEMPTS: ${progress.attempts}<br>
+                        ${percentage > progress.bestScore && progress.attempts > 1 ? '<br>NEW PERSONAL BEST' : ''}
                     </div>
                     <details style="margin: 20px 0; text-align: left;">
-                        <summary style="cursor: pointer; color: #00aaff; font-weight: bold;">📋 View Detailed Results</summary>
+                        <summary style="cursor: pointer; color: #00aaff; font-weight: bold;">VIEW DETAILED RESULTS</summary>
                         <div style="margin-top: 15px; max-height: 400px; overflow-y: auto;">
                             ${detailedResults}
                         </div>
                     </details>
                     <div style="margin-top: 30px;">
-                        <button class="restart-btn" onclick="restartQuiz()">⟳ Try Again</button>
-                        <a href="home.html" class="back-home">🏠 Back to Home</a>
-                        <button class="clear-progress-btn" onclick="clearAllProgress()">🗑️ Delete All Progress</button>
+                        <button class="restart-btn" onclick="restartQuiz()">TRY AGAIN</button>
+                        <a href="home.html" class="back-home">BACK TO HOME</a>
+                        <button class="clear-progress-btn" onclick="clearAllProgress()">DELETE ALL PROGRESS</button>
                     </div>
                 </div>
             `;
